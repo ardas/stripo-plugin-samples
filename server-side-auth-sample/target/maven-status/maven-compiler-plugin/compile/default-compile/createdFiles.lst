@@ -1,0 +1,8 @@
+com\stripo\plugin\example\rest\dto\PluginTokenParams$PluginTokenParamsBuilder.class
+com\stripo\plugin\example\rest\dto\Email.class
+com\stripo\plugin\example\rest\dto\PluginToken.class
+com\stripo\plugin\example\rest\SampleRestController.class
+com\stripo\plugin\example\rest\dto\Template.class
+com\stripo\plugin\example\rest\JsonObjectMapper.class
+com\stripo\plugin\example\StripoPluginSampleApplication.class
+com\stripo\plugin\example\rest\dto\PluginTokenParams.class
