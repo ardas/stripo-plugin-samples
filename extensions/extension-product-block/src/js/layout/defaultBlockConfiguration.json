@@ -1,0 +1,44 @@
+{
+  "rowCount": 1,
+  "totalCount": 1,
+  "composition": {
+    "variables": [
+      {
+        "variable": "p_image",
+        "visibilityAreaSelector": ".ext-product-image",
+        "canHide": true,
+        "hidden": false
+      },
+      {
+        "variable": "p_name",
+        "visibilityAreaSelector": ".ext-product-name",
+        "canHide": true,
+        "hidden": false
+      },
+      {
+        "variable": "p_vendor_code",
+        "visibilityAreaSelector": ".ext-product-vendor-code",
+        "canHide": true,
+        "hidden": true
+      },
+      {
+        "variable": "p_dimensions",
+        "visibilityAreaSelector": ".ext-product-dimensions",
+        "canHide": true,
+        "hidden": true
+      },
+      {
+        "variable": "p_price",
+        "visibilityAreaSelector": ".ext-product-price",
+        "canHide": true,
+        "hidden": false
+      },
+      {
+        "variable": "p_button",
+        "visibilityAreaSelector": ".ext-product-button",
+        "canHide": true,
+        "hidden": false
+      }
+    ]
+  }
+}
