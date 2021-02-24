@@ -1,0 +1,174 @@
+#externalPreviewPopup {
+    background-color: rgba(0,0,0,.5);
+    overflow: hidden;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1050;
+    font-family: sans-serif;
+}
+
+.modal-container {
+    background-color: #f6f6f6;
+    border-radius: 17px 17px 30px 30px;
+    width: 1120px;
+    margin: 10px auto;
+}
+
+.modal-header-container {
+    padding: 15px;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.modal-title {
+    margin: 0;
+    font-size: 18px;
+    color: rgb(85, 85, 85);
+}
+
+.modal-close-button {
+    cursor: pointer;
+    background: transparent;
+    border: 0;
+    float: right;
+    font-size: 21px;
+    font-weight: bold;
+    opacity: .2;
+}
+
+*, ::after, ::before {
+    box-sizing: border-box;
+}
+
+.preview-container-fluid {
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.preview-row {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px;
+}
+
+.preview-col-sm-8 {
+    -ms-flex: 0 0 66.666667%;
+    flex: 0 0 66.666667%;
+    max-width: 66.666667%;
+}
+
+.preview-col-sm-4 {
+    -ms-flex: 0 0 33.333333%;
+    flex: 0 0 33.333333%;
+    max-width: 33.333333%;
+}
+
+.preview-col-sm-4, .preview-col-sm-8 {
+    position: relative;
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+.esdev-desktop-device-screen,
+.esdev-mobile-device-screen {
+    background-color: #ffffff;
+}
+
+.esdev-desktop-device {
+    background: #ffffff;
+    border: 2px solid #e8e8e8;
+    font-size: 0;
+    position: relative;
+    border-radius: 10px 10px 3px 3px;
+}
+
+.esdev-desktop-device:before {
+    content: "―–";
+    display: block;
+    background: #e8e8e8;
+    position: absolute;
+    margin-top: 16px;
+    border-radius: 10px;
+    margin-left: 47px;
+    font-size: 73px;
+    color: #e8e8e8;
+    line-height: 0;
+    font-family: sans-serif;
+}
+
+.esdev-email-window-panel {
+    padding: 15px 15px 12px;
+    border-bottom: 1px solid #e8e8e8;
+    font-size: 14px;
+}
+
+.esdev-email-user-avatar {
+    float: left;
+    color: #e8e8e8 !important;
+    text-shadow: none !important;
+    font-size: 16px !important;
+}
+
+.esdev-email-subject {
+    padding-left: 13px;
+    padding-top: 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.esdev-mobile-device {
+    position: relative;
+    height: 698px;
+    width: 344px;
+    border-radius: 40px;
+    padding: 50px 10px 60px;
+    background: #fff;
+    border: 2px solid #e8e8e8;
+}
+
+.esdev-mobile-device-screen {
+    box-shadow: 0 0 0 1px #e8e8e8;
+    border-radius: 2px;
+    overflow: hidden;
+    height: 568px;
+}
+
+.esdev-mobile-device-screen .esdev-mail-bottom-bar {
+    margin-top: -5px;
+}
+
+.esdev-mobile-device:after {
+    position: absolute;
+    bottom: 13px;
+    left: 50%;
+    margin-left: -24px;
+    width: 50px;
+    height: 50px;
+    border-radius: 30px;
+    border: 2px solid #e8e8e8;
+    content: " ";
+    display: block;
+}
+
+.esdev-mobile-device:before {
+    position: absolute;
+    top: 22px;
+    left: 50%;
+    margin-left: -30px;
+    width: 60px;
+    background: #e8e8e8;
+    height: 8px;
+    border-radius: 20px;
+    content: " ";
+    display: block;
+}
