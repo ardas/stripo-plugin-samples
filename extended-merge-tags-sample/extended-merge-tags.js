@@ -1,4 +1,4 @@
-window.ExtandedMergeTags = (function() {
+window.ExternalMergeTags = (function() {
     var externalMergeTags;
     var selectCallback;
 
