@@ -41,6 +41,7 @@ window.ExternalMergeTags = (function() {
         externalMergeTags = document.getElementById('externalMergeTags');
         externalMergeTags.querySelector('.close').addEventListener('click', cancelAndClose);
         externalMergeTags.addEventListener('click', function(e) {
+            e.stopPropagation();
             if (!e.target.matches('.thumbnail')) {
                 return;
             }
