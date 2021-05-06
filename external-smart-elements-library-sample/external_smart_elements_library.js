@@ -52,9 +52,9 @@ window.ExternalSmartElementsLibrary = (function() {
         document.querySelectorAll('.thumbnail')
             .forEach(thumbnail => thumbnail.addEventListener('click', function(e) {
             var exampleOfCallbackObject = {
-                title: e.currentTarget.querySelector('h4').innerText,
-                price: e.currentTarget.querySelector('span').innerText,
-                image: e.currentTarget.querySelector('img').getAttribute('src')
+                p_name: e.currentTarget.querySelector('h4').innerText,
+                p_price: e.currentTarget.querySelector('span').innerText,
+                p_image: e.currentTarget.querySelector('img').getAttribute('src')
             };
             dataSelectCallback(exampleOfCallbackObject);
             close();
