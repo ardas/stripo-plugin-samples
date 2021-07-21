@@ -34,7 +34,7 @@
     <div id="stripoPreviewContainer"></div>
 </div>
 
-<script type="application/javascript" src="external_smart_elements_library.js"></script>
+<script type="application/javascript" src="external_display_conditions.js"></script>
 <script>
     // Utility methods
     function request(method, url, data, callback) {
@@ -75,6 +75,7 @@
         script.id = 'stripoScript';
         script.type = 'text/javascript';
         script.src = 'https://plugins.stripo.email/static/latest/stripo.js';
+
         script.onload = function () {
             window.Stripo.init({
                 settingsId: 'stripoSettingsContainer',
@@ -84,9 +85,37 @@
                 html: template.html,
                 css: template.css,
                 externalSmartElementsLibrary: window.ExternalSmartElementsLibrary,
-                enableWebSiteLinksForSmartElementsLibrary : true,
-                ignoreClickOutsideSelectors: '#externalSmartElementsLibrary',
+                ignoreClickOutsideSelectors: '#externalDisplayConditionsPopup',
                 apiRequestData: apiRequestData,
+                conditionsEnabled: true,
+                customConditionsEnabled: true,
+                conditionCategories: [
+                    {
+                        type: 'EXTERNAL',
+                        category:'Complex conditions',
+                        openExternalDisplayConditionsDialog: window.ExternalDisplayConditions.openExternalDisplayConditionsDialog
+                    },
+                    {
+                        "type": "PREDEFINED",
+                        "category": "Gender",
+                        "conditions": [
+                            {
+                                "id": 1,
+                                "name": "Men",
+                                "description": "Men only",
+                                "beforeScript": "<!-- %IF in_array('men', $CATEGORY) -->",
+                                "afterScript": "<!-- %/IF% -->"
+                            },
+                            {
+                                "id": 2,
+                                "name": "Women",
+                                "description": "Women only",
+                                "beforeScript": "<!-- %IF in_array('women', $CATEGORY) -->",
+                                "afterScript": "<!-- %/IF% -->"
+                            }
+                        ]
+                    }
+                ],
                 getAuthToken: function (callback) {
                     request('POST', 'https://plugins.stripo.email/api/v1/auth',
                         JSON.stringify({
