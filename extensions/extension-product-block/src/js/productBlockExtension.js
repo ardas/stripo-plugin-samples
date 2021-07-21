@@ -2,7 +2,7 @@ import {
     ATTR_NAME_BLOCK_CONFIGURATION,
     ATTR_NAME_RECOMMENDATION_GROUPS,
     BLOCK_UNIQUE_CLASS_NAME,
-    CONTROL_NAME_BLOCK_GROUPS,
+    CONTROL_NAME_BLOCK_GROUPS, CONTROL_NAME_BLOCK_PADDING,
     CONTROL_NAME_CARD_BACKGROUND_COLOR,
     CONTROL_NAME_CARD_BORDER,
     CONTROL_NAME_CARD_COMPOSITION,
@@ -34,6 +34,15 @@ import {createBlockConfigurationService} from "./blockConfiguration";
 import verticalContainerLayout from "./layout/verticalContainerLayout.html";
 import horizontalStructureLayout from "./layout/horizontalStructureLayout.html";
 import defaultLayout from "./layout/defaultLayout.html";
+import blockBorderControl from './controls/blockBorderControl';
+import blockMarginControl from './controls/blockMarginControl';
+import blockPaddingControl from './controls/blockPaddingControl';
+import cardTextPaddingControl from './controls/composition/cardTextPaddingControl';
+import cardButtonExternalPaddingControl from './controls/composition/cardButtonExternalPaddingControl';
+import cardButtonInternalPaddingControl from './controls/composition/cardButtonInternalPaddingControl';
+import cardTextLineSpacingControl from './controls/composition/cardTextLineSpacingControl';
+import cardButtonBorderControl from './controls/composition/cardButtonBorderControl';
+import cardImageSizeControl from './controls/composition/cardImageSizeControl';
 
 
 export function createProductBlockExtension(stripoConfig, stripoApi, extensionBasePath) {
@@ -189,12 +198,10 @@ export function createProductBlockExtension(stripoConfig, stripoApi, extensionBa
     }
 
     function onBlockCopy(sourceBlock, targetBlock) {
-
         let blockConfig = blockConfigurationService.getBlockConfigurationForCopiedBlock(targetBlock);
         blockConfig = wrapBlockWithTypeIdentifierAttributesAndGetConfig(targetBlock, blockConfig);
         updateLayout(targetBlock, blockConfig);
         updateBlockLabel(targetBlock);
-
     }
 
     function getDisabledGroupsIdsForBlock(block) {
@@ -225,27 +232,37 @@ export function createProductBlockExtension(stripoConfig, stripoApi, extensionBa
             ATTR_NAME_BLOCK_CONFIGURATION
         ],
         controlsToCreate: [
+            {control: blockBorderControl, parentControlName: 'stripoStructureBorderControl'},
+            {control: blockMarginControl, parentControlName: 'stripoStructureMarginControl'},
+            {control: blockPaddingControl, parentControlName: 'stripoStructurePaddingsControl'},
             {control: cardBackgroundColorControl, parentControlName: 'stripoBackgroundColorControl'},
             {control: cardBorderControl, parentControlName: 'stripoBorderControl'},
             {control: cardOrientationControl},
             {control: cardsInRowCountControl},
             {control: cardCompositionControl},
             {control: blockGroupsControl},
+            {control: cardImageSizeControl, parentControlName: 'stripoImageSizeControl'},
             {control: cardTextColorControl, parentControlName: 'stripoFontColorControl'},
             {control: cardTextAlignControl, parentControlName: 'stripoTextAlignControl'},
             {control: cardTextStyleControl, parentControlName: 'stripoTextStyleControl'},
+            {control: cardTextLineSpacingControl, parentControlName: 'stripoTextLineSpacingControl'},
+            {control: cardTextPaddingControl, parentControlName: 'stripoPaddingСontrol'},
             {control: cardButtonColorControl, parentControlName: 'stripoButtonColorControl'},
             {control: cardButtonStyleControl, parentControlName: 'stripoButtonStyleControl'},
             {control: cardButtonTextControl, parentControlName: 'stripoButtonTextControl'},
             {control: cardButtonTextColorControl, parentControlName: 'stripoButtonTextColorControl'},
+            {control: cardButtonBorderControl, parentControlName: 'stripoButtonBorderControl'},
             {control: cardButtonBorderRadiusControl, parentControlName: 'stripoButtonBorderRadiusControl'},
             {control: cardButtonAlignControl, parentControlName: 'stripoButtonAlignControl'},
-            {control: cardButtonStretchControl, parentControlName: 'stripoButtonStretchControl'}
+            {control: cardButtonStretchControl, parentControlName: 'stripoButtonStretchControl'},
+            {control: cardButtonInternalPaddingControl, parentControlName: 'stripoButtonInternalPaddingControl'},
+            {control: cardButtonExternalPaddingControl, parentControlName: 'stripoPaddingСontrol'}
         ],
         blockControls: [
             CONTROL_NAME_BLOCK_GROUPS,
             CONTROL_NAME_CARD_ORIENTATION,
             CONTROL_NAME_CARDS_IN_ROW_COUNT,
+            CONTROL_NAME_BLOCK_PADDING,
             CONTROL_NAME_CARD_BACKGROUND_COLOR,
             CONTROL_NAME_CARD_BORDER,
             CONTROL_NAME_CARD_COMPOSITION

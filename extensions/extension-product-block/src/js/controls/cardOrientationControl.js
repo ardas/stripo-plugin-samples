@@ -34,8 +34,24 @@ export default {
 
     onButtonSelected(button) {
         this.panelState.blockConfig.orientation = button.value;
+        this.toggleButtonAdjustToWidth();
         this.updateLayout();
         this.applyChangesImmediately();
+    },
+
+    toggleButtonAdjustToWidth() {
+        let isVerticalOrientation = this.panelState.blockConfig.orientation == ORIENTATION_VERTICAL;
+        const theme = this.panelState.blockConfig.composition.variables.find(item => item.variable == 'p_button').theme;
+        theme.buttonStretch = isVerticalOrientation;
+        if (isVerticalOrientation) {
+            theme.buttonInternalPadding.desktop.left = 0;
+            theme.buttonInternalPadding.desktop.right = 0;
+            delete this.panelState.internalIndentLeft;
+            delete this.panelState.internalIndentRight;
+        } else {
+            theme.buttonInternalPadding.desktop.left = 40;
+            theme.buttonInternalPadding.desktop.right = 40;
+        }
     },
 
     layoutChanged() {
@@ -50,9 +66,9 @@ export default {
 
     getControlMarkup() {
         return `<div class="form-group">
-                <label for="emailContentWidth" class="col-xs-7 control-label">${this.translate('settings.controls.orientation.label')}</label>
+                <label class="col-xs-7 control-label">${this.translate('settings.controls.orientation.label')}</label>
                 <div class="col-xs-5 pull-right">
-                    <buttons-selector classes="btn-group-justified"></buttons-selector>
+                    <buttons-selector classes="btn-group-justified orientation-control"></buttons-selector>
                 </div>
             </div>`;
     },

@@ -72,7 +72,11 @@
 
 .product-groups-picker .text small {
     float: right;
-    margin-right: 33px;
+    margin-right: 75px;
+}
+
+.product-groups-picker a.onlyThisItemOnHover:hover .text small {
+    margin-right: 0px !important;
 }
 
 .product-groups-picker .disabled {
@@ -81,10 +85,6 @@
 
 .hidden-area {
     display: none !important;
-}
-
-.product-composition-internal-control:last-child .form-group {
-    margin-bottom: 0px !important;
 }
 
 .product-composition-internal-controls-container {

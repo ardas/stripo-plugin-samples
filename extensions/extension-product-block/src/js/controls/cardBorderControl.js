@@ -10,11 +10,15 @@ const DEFAULT_STYLES = {
 export default {
     ...baseControl,
     name: CONTROL_NAME_CARD_BORDER,
-    themeKey: 'border',
+    themeKey: 'cardBorder',
+
+    getLabel() {
+        return this.translate('settings.controls.cardBorder.label');
+    },
 
     getBorderStyleValue() {
-        return this.panelState.blockConfig.theme && this.panelState.blockConfig.theme.border
-                ? this.panelState.blockConfig.theme.border
+        return this.panelState.blockConfig.theme && this.panelState.blockConfig.theme.cardBorder
+                ? this.panelState.blockConfig.theme.cardBorder
                 : {
                     top: {...DEFAULT_STYLES},
                     right: {...DEFAULT_STYLES},

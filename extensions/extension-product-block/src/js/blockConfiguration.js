@@ -14,7 +14,7 @@ export function createBlockConfigurationService(stripoConfig) {
     function getOrCreateConfig(blockConfig = {}) {
         blockConfig.composition = blockConfig.composition || {...defaultBlockConfiguration.composition};
         blockConfig.theme = blockConfig.theme || {};
-        blockConfig.orientation = blockConfig.recommendationsOrientation || ORIENTATION_VERTICAL;
+        blockConfig.orientation = blockConfig.orientation || blockConfig.recommendationsOrientation || ORIENTATION_VERTICAL;
         blockConfig.groups = blockConfig.groups || [];
         blockConfig.rowCount = blockConfig.rowCount || stripoConfig.productDemoBlock.rowCount || 3;
         blockConfig.totalCount = blockConfig.groups.reduce((sum, g) => sum + g.count, 0)
