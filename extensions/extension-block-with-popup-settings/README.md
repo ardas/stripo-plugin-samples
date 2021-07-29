@@ -15,6 +15,7 @@
      ```bash
          window.Stripo.init({
             ...,
+            "ignoreClickOutsideSelectors": "#fontSizeModal",
             "extensions": [
                 {
                   "globalName": "DemoHeaderBlockExtension",
