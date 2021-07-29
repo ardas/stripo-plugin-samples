@@ -1,4 +1,4 @@
-# 'Product' block extension
+# 'Demo header' block extension
 
 ## Creating extension
 
