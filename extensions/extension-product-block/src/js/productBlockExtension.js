@@ -35,7 +35,6 @@ import verticalContainerLayout from "./layout/verticalContainerLayout.html";
 import horizontalStructureLayout from "./layout/horizontalStructureLayout.html";
 import defaultLayout from "./layout/defaultLayout.html";
 import blockBorderControl from './controls/blockBorderControl';
-import blockMarginControl from './controls/blockMarginControl';
 import blockPaddingControl from './controls/blockPaddingControl';
 import cardTextPaddingControl from './controls/composition/cardTextPaddingControl';
 import cardButtonExternalPaddingControl from './controls/composition/cardButtonExternalPaddingControl';
@@ -233,7 +232,6 @@ export function createProductBlockExtension(stripoConfig, stripoApi, extensionBa
         ],
         controlsToCreate: [
             {control: blockBorderControl, parentControlName: 'stripoStructureBorderControl'},
-            {control: blockMarginControl, parentControlName: 'stripoStructureMarginControl'},
             {control: blockPaddingControl, parentControlName: 'stripoStructurePaddingsControl'},
             {control: cardBackgroundColorControl, parentControlName: 'stripoBackgroundColorControl'},
             {control: cardBorderControl, parentControlName: 'stripoBorderControl'},

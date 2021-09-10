@@ -27,7 +27,7 @@ export default {
                 };
     },
 
-    getTargetElements() {
+    getDomElementsToApplyValue() {
         return [this.initialDomElement];
     },
 

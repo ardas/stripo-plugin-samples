@@ -27,7 +27,7 @@ export default {
                 };
     },
 
-    getTargetElements() {
+    getDomElementsToApplyValue() {
         return this.panelState.blockConfig.orientation == ORIENTATION_HORIZONTAL
             ? this.initialDomElement.querySelectorAll('.esd-structure')
             : this.initialDomElement.querySelectorAll('.esd-container-frame:not(.esd-ignore-theme-settings)>table');

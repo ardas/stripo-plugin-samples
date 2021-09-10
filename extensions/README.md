@@ -48,7 +48,7 @@ in the field `globalName`. When being created, the extension receives as an inpu
   * `name` - the extension name.
   * `iconClass` - class of the block icon.
   * `uniqueClassName` - the unique class that the root element of the block will have.
-  * `canBeSavedToLibrary` - sets whether adding blocks to the library is allowed.  
+  * `canBeSavedToLibrary` - sets whether to add blocks to the library is allowed.  
   * `settingsCssPath` - a relative path to CSS stylesheet for the settings panel.
   * `previewCssPath` - relative path to CSS stylesheet for the email display pane.
   * `i18n` - block localization. Example - `translations.js`.
@@ -57,7 +57,9 @@ in the field `globalName`. When being created, the extension receives as an inpu
   noting that if the block type is `multi-orientation`, then the icon will be added to the 1-container structure only.
   * `blockType` - block type. Supported values:
     * `block` - for a simple block. 
+    * `structure` - for a structure like block.
     * `multi-orientation` - for a block with the orientation that changes — horizontal/vertical. For example, product cards.
+  * `disableSettingsPanel` - sets whether to show settings panel on block selection or not.  
   * `blockConfigAttributeNames` - the array of the supported attributes for storing block’s condition. It is 
   required when a block needs some data set as a JSON object. These attributes are not set in the code in the code editor. 
   * `controlsToCreate` - a list of additional controls’ elements created in the extension that the Stripo editor 
@@ -235,7 +237,7 @@ this.applyChangesImmediately() | similar to the `applyChanges()` function except
 this.createInternalControl(controlName) | creates a new object — control by its name.   
 this.setControlsSeparatorVisible(isVisible) | hides/shows the separator between controls specified by the `controlHrVisibilitySelector` CSS-selector when rendering in the `activateInternalControl(...)` function.
 this.registerSettingsEventListener(eventName, callback) | registers the listener for the `eventName` event with the `callback` function. The event itself can be generated using the editor API — `triggerEvent (...)`.
-this.updateControlValue(value) | if the control is inherited from the built-in control of the editor, then this function allows you to forcibly set the desired value of the control.
+this.updateControlValue(value, forceUpdate) | if the control is inherited from the built-in control of the editor, then this function allows you to set the desired value of the control. If forceUpdate is true then the value will be set even on hidden control. 
 this.updateControlVisibility() | initializes a call to all controls of the `isControlVisible()` function and, depending on the result, hides / shows the control. 
 this.controlValueUpdated(value) | if the control is inherited from the built-in control of the editor, then this function is called by the editor after the value of the control has been changed.
 
@@ -319,7 +321,7 @@ When using the `updateControlValue` function, you need to pass a value as a para
 
 #### "Border"
 
-Sets border to a specified element.
+Sets border to a specified block element.
 
 Usage:
 ```
@@ -363,6 +365,106 @@ Usage:
 When using the `updateControlValue` function, you need to pass a value as a parameter, as shown below:
 ```
     this.updateControlValue({"top":{"borderWidth":2,"borderStyle":"solid","borderColor":"#93c47d"},"right":{"borderWidth":2,"borderStyle":"solid","borderColor":"#93c47d"},"bottom":{"borderWidth":2,"borderStyle":"solid","borderColor":"#93c47d"},"left":{"borderWidth":2,"borderStyle":"solid","borderColor":"#93c47d"}}});
+```
+
+#### "Structure Border"
+
+Sets border to a specified structure element.
+
+Usage:
+```
+    {
+        "control": {
+            name: 'name of the created control',
+            
+            getLabel() {
+              return 'Structure border'; // sets a name of a control
+            },
+            
+            getBorderStyleValue() { // sets the initial value of the border that should be displayed in the control
+                return {
+                    top: {
+                        borderWidth: 0,
+                        borderStyle: 'solid',
+                        borderColor: undefined
+                    },
+                    right: {
+                        borderWidth: 0,
+                        borderStyle: 'solid',
+                        borderColor: undefined
+                    },
+                    bottom: {
+                        borderWidth: 0,
+                        borderStyle: 'solid',
+                        borderColor: undefined
+                    },
+                    left: {
+                        borderWidth: 0,
+                        borderStyle: 'solid',
+                        borderColor: undefined
+                    }
+                };
+            },
+
+            getDomElementsToApplyValue() { // specifies the DOM-elements within the block to which the control values should be applied
+                return this.initialDomElement.querySelectorAll('...')
+            }
+        }, 
+        "parentControlName": "stripoStructureBorderControl"
+    }
+```
+
+When using the `updateControlValue` function, you need to pass a value as a parameter, as shown below:
+```
+    this.updateControlValue({"top":{"borderWidth":2,"borderStyle":"solid","borderColor":"#93c47d"},"right":{"borderWidth":2,"borderStyle":"solid","borderColor":"#93c47d"},"bottom":{"borderWidth":2,"borderStyle":"solid","borderColor":"#93c47d"},"left":{"borderWidth":2,"borderStyle":"solid","borderColor":"#93c47d"}}});
+```
+
+#### "Structure Paddings"
+
+Sets paddings to a specified structure element.
+
+Usage:
+```
+    {
+        "control": {
+            name: 'name of the created control',
+            
+            getLabel() {
+              return 'Structure paddings'; // sets a name of a control for desktop view
+            },
+            
+            getMobileLabel() {
+              return 'Structure mobile paddings';  // sets a name of a control for mobile view
+            },
+            
+            getPaddingStyleValue() { // sets the initial value of the margin that should be displayed in the control
+                return {
+                    desktop: {
+                      top: 20,
+                      right: 20,
+                      bottom: 0,
+                      left: 20
+                    },
+                    mobile: {
+                      top: 0,
+                      right: 0,
+                      bottom: 0,
+                      left: 0
+                    }
+                };
+            },
+
+            getDomElementsToApplyValue() { // specifies the DOM-elements within the block to which the control values should be applied
+                return this.initialDomElement.querySelectorAll('...')
+            }
+        }, 
+        "parentControlName": "stripoStructurePaddingsControl"
+    }
+```
+
+When using the `updateControlValue` function, you need to pass a value as a parameter, as shown below:
+```
+    this.updateControlValue({desktop: {top: 0, right: 0, bottom: 0, left: 20}, mobile: {top: 0, right: 0, bottom: 0, left: 0}});
 ```
 
 #### "Text color"
@@ -424,7 +526,7 @@ When using the `updateControlValue` function, you need to pass a value as a para
 
 #### "Text style"
 
-Sets textstyle to a specified text element.
+Sets text style to a specified text element.
 
 Usage:
 ```
@@ -459,6 +561,84 @@ Usage:
 When using the `updateControlValue` function, you need to pass a value as a parameter, as shown below:
 ```
     this.updateControlValue({"font-family":"'courier new',courier,'lucida sans typewriter','lucida typewriter',monospace","font-size":"16px","font-weight":"normal","font-style":"italic"});
+```
+
+#### "Text line spacing"
+
+Sets line spacing to a specified text element.
+
+Usage:
+```
+    {
+        "control": {
+            name: 'name of the created control',
+            
+            getControlValue() { // sets the initial value of the line spacing that should be displayed in the control
+                return {
+                    lineSpacing: "200%"
+                };
+            },
+
+            getDomElementsToApplyValue() { // specifies the DOM-elements within the block to which the control values should be applied
+                return this.initialDomElement.querySelectorAll('...')
+            }
+        }, 
+        "parentControlName": "stripoTextLineSpacingControl"
+    }
+```
+
+When using the `updateControlValue` function, you need to pass a value as a parameter, as shown below:
+```
+    this.updateControlValue({lineSpacing: "150%"});
+```
+
+
+#### "Text Paddings"
+
+Sets paddings to a specified text element.
+
+Usage:
+```
+    {
+        "control": {
+            name: 'name of the created control',
+            
+            getLabel() {
+              return 'Text paddings'; // sets a name of a control for desktop view
+            },
+            
+            getMobileLabel() {
+              return 'Text mobile paddings';  // sets a name of a control for mobile view
+            },
+            
+            getPaddingStyleValue() { // sets the initial value of the margin that should be displayed in the control
+                return {
+                    desktop: {
+                      top: 20,
+                      right: 20,
+                      bottom: 0,
+                      left: 20
+                    },
+                    mobile: {
+                      top: 0,
+                      right: 0,
+                      bottom: 0,
+                      left: 0
+                    }
+                };
+            },
+
+            getDomElementsToApplyValue() { // specifies the DOM-elements within the block to which the control values should be applied
+                return this.initialDomElement.querySelectorAll('...')
+            }
+        }, 
+        "parentControlName": "stripoPaddingСontrol"
+    }
+```
+
+When using the `updateControlValue` function, you need to pass a value as a parameter, as shown below:
+```
+    this.updateControlValue({desktop: {top: 0, right: 0, bottom: 0, left: 20}, mobile: {top: 0, right: 0, bottom: 0, left: 0}});
 ```
 
 #### "Button label"
@@ -666,4 +846,166 @@ Usage:
 When using the `updateControlValue` function, you need to pass a value as a parameter, as shown below:
 ```
     this.updateControlValue({"stretched": false});
+```
+
+#### "Button border"
+
+Sets button's border.
+
+Usage:
+```
+    {
+        "control": {
+            name: 'name of the created control',
+            
+            getControlValue() { // sets the initial value of the border that should be displayed in the control
+                return {
+                    "width": {
+                        "left": 3,
+                        "right": 4,
+                        "top": 3,
+                        "bottom": 3
+                    },
+                    "style": {
+                        "left": "solid",
+                        "right": "solid",
+                        "top": "solid",
+                        "bottom": "solid"
+                    },
+                    "color": {
+                        "left": "#808080",
+                        "right": "#808080",
+                        "top": "#808080",
+                        "bottom": "#808080"
+                    }
+                };
+            },
+
+            getDomElementsToApplyValue() { // specifies the DOM-elements within the block to which the control values should be applied
+                return this.initialDomElement.querySelectorAll('...')
+            }
+        }, 
+        "parentControlName": "stripoButtonBorderControl"
+    }
+```
+
+When using the `updateControlValue` function, you need to pass a value as a parameter, as shown below:
+```
+    this.updateControlValue({"width": {"left": 3, "right": 4, "top": 3, "bottom": 3}, "style": {"left": "solid","right": "solid","top": "solid", "bottom": "solid"},"color": {"left": "#808080","right": "#808080","top": "#808080","bottom": "#808080"}});
+```
+
+#### "Button Internal Padding"
+
+Sets button's internal padding.
+
+Usage:
+```
+    {
+        "control": {
+            name: 'name of the created control',
+            
+            getLabel() {
+              return 'Internal padding'; // sets a label of a control
+            },
+            
+            getControlValue() { // sets the initial value of the internal padding that should be displayed in the control
+                return {
+                    "desktop": {
+                        "all": 0,
+                        "top": 10,
+                        "right": 0,
+                        "bottom": 5,
+                        "left": 0
+                      }
+                };
+            },
+
+            getDomElementsToApplyValue() { // specifies the DOM-elements within the block to which the control values should be applied
+                return this.initialDomElement.querySelectorAll('...')
+            }
+        }, 
+        "parentControlName": "stripoButtonInternalPaddingControl"
+    }
+```
+
+When using the `updateControlValue` function, you need to pass a value as a parameter, as shown below:
+```
+    this.updateControlValue({desktop: {top: 0, right: 0, bottom: 0, left: 20}});
+```
+
+#### "Button External Padding"
+
+Sets button's external padding.
+
+Usage:
+```
+    {
+        "control": {
+            name: 'name of the created control',
+            
+            getLabel() {
+              return 'External padding'; // sets a label of a control
+            },
+            
+            getMobileLabel() {
+                return "Mobile external padding"; // sets a mobile label of a control
+            },
+            
+            getControlValue() { // sets the initial value of the external padding that should be displayed in the control
+                return {
+                    "desktop": {
+                        "top": 10,
+                        "right": 0,
+                        "bottom": 5,
+                        "left": 0
+                    },
+                    "mobile": {
+                        "top": 5,
+                        "right": 5,
+                        "bottom": 0,
+                        "left": 5
+                    }
+                };
+            },
+
+            getDomElementsToApplyValue() { // specifies the DOM-elements within the block to which the control values should be applied
+                return this.initialDomElement.querySelectorAll('...')
+            }
+        }, 
+        "parentControlName": "stripoPaddingСontrol"
+    }
+```
+
+When using the `updateControlValue` function, you need to pass a value as a parameter, as shown below:
+```
+    this.updateControlValue({desktop: {top: 0, right: 0, bottom: 0, left: 20},"mobile": {"top": 5,"right": 5,"bottom": 0,"left": 5}});
+```
+
+#### "Image size"
+
+Sets image size.
+
+Usage:
+```
+    {
+        "control": {
+            name: 'name of the created control',
+            
+            getControlValue() { // sets the initial value of the image size
+                return {
+                  "width": 174
+                }
+            },
+
+            getDomElementsToApplyValue() { // specifies the DOM-elements within the block to which the control values should be applied
+                return this.initialDomElement.querySelectorAll('...')
+            }
+        }, 
+        "parentControlName": "stripoImageSizeControl"
+    }
+```
+
+When using the `updateControlValue` function, you need to pass a value as a parameter, as shown below:
+```
+    this.updateControlValue({height: 200});
 ```
