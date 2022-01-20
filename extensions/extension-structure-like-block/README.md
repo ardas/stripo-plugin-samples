@@ -1,4 +1,4 @@
-# 'Product' block extension
+# 'Structure like' block extension
 
 ## Creating extension
 
