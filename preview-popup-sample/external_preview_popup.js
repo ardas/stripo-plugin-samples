@@ -2,7 +2,8 @@ window.ExternalPreviewPopup = (function() {
     var externalPreviewPopup;
 
     var close = function() {
-        externalPreviewPopup.style.visibility = 'hidden';
+        externalPreviewPopup.parentNode.remove();
+        externalPreviewPopup = null;
     };
 
     var initPreviewPopup = function() {
@@ -49,23 +50,26 @@ window.ExternalPreviewPopup = (function() {
         externalPreviewPopup.querySelector('.close').addEventListener('click', close);
     };
 
-    var openPreviewPopup = function(html) {
-        if (!externalPreviewPopup) {
-            initPreviewPopup();
-        }
-        updateContent(html);
+    var openPreviewPopup = function(html, ampHtml) {
+        initPreviewPopup();
+        updateContent(html, ampHtml);
         externalPreviewPopup.style.visibility = 'visible';
     };
 
-    var updateContent = function(html) {
+    var updateContent = function(html, ampHtml) {
+        let htmlToSet = html;
+        if (ampHtml) {
+            console.log('AMP html will be used');
+            htmlToSet = ampHtml;
+        }
         var iframeDesktop = document.querySelector('#iframeDesktop');
         iframeDesktop.contentWindow.document.open('text/html', 'replace');
-        iframeDesktop.contentWindow.document.write(html);
+        iframeDesktop.contentWindow.document.write(htmlToSet);
         iframeDesktop.contentWindow.document.close();
 
         var iframeMobile = document.querySelector('#iframeMobile');
         iframeMobile.contentWindow.document.open('text/html', 'replace');
-        iframeMobile.contentWindow.document.write(html);
+        iframeMobile.contentWindow.document.write(htmlToSet);
         iframeMobile.contentWindow.document.close();
     };
 
