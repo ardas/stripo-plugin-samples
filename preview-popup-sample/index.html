@@ -107,8 +107,8 @@
     <script>
         //Preview popup scripts
         document.querySelector('#previewButton').addEventListener('click', function() {
-            window.StripoApi.compileEmail(function (error, html) {
-                window.ExternalPreviewPopup.openPreviewPopup(html);
+            window.StripoApi.compileEmail(function (error, html, ampHtml) {
+                window.ExternalPreviewPopup.openPreviewPopup(html, ampHtml);
             });
         });
     </script>
