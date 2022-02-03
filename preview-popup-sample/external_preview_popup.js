@@ -57,11 +57,7 @@ window.ExternalPreviewPopup = (function() {
     };
 
     var updateContent = function(html, ampHtml) {
-        let htmlToSet = html;
-        if (ampHtml) {
-            console.log('AMP html will be used');
-            htmlToSet = ampHtml;
-        }
+        let htmlToSet = ampHtml || html;
         var iframeDesktop = document.querySelector('#iframeDesktop');
         iframeDesktop.contentWindow.document.open('text/html', 'replace');
         iframeDesktop.contentWindow.document.write(htmlToSet);
