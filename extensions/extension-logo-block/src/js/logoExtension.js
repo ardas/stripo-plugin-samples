@@ -27,7 +27,7 @@ export function createLogoExtension(stripoConfig, stripoApi, extensionBasePath) 
     }
 
     return {
-        name: 'UsefulLinksDemoBlock',
+        name: 'LogoDemoBlock',
         iconClass: 'es-icon-logo',
         uniqueClassName: BLOCK_UNIQUE_CLASS_NAME,
         settingsCssPath: '/assets/css/settings.css',
