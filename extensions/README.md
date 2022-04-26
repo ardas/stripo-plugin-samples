@@ -94,7 +94,8 @@ Function | Description
 getAppConfig() | returns editor configuration, transmitted during initialization
 getFullDomTree() | returns the DOM-tree of email elements as the jQuery object
 jQuery | returns jQuery, which is used by the editor  
-runWithDelay(key, func, delay) | fulfills the `func` function with the `delay` milliseconds delay. The  `key` serves as the key, which determines the delay. For instance, runWithDelay('someAction', doSomething, 500) fulfills the doSomething() function in 500 milliseconds, if there is no second call runWithDelay('someAction', ...) within these 500 milliseconds. Otherwise, the call will be delayed for another 500 milliseconds.  
+runWithDelay(key, func, delay) | fulfills the `func` function with the `delay` milliseconds delay. The  `key` serves as the key, which determines the delay. For instance, runWithDelay('someAction', doSomething, 500) fulfills the doSomething() function in 500 milliseconds, if there is no second call runWithDelay('someAction', ...) within these 500 milliseconds. Otherwise, the call will be delayed for another 500 milliseconds.
+setViewOnlyMode(isViewEditMode) | disables the ability to DND and copy block
 translate(key, params) | returns translation by the `key` key and the `params` parameters. Params from the `i18n` extension are used for translation. The array of values is passed as a parameter. They are added in translations instead of $0, $1... 
 triggerEvent(eventType, eventData) | generates an `eventType` event and with `eventData` data
 updateStructureLayoutForHorizontalOrientation(block, sampleStructureLayout, configuration) | is used for the `multi-orientation` block type to form the appearance of the block with horizontal orientation according to the sample layout of the `sampleStructureLayout` structure and the specified `configuration` config 

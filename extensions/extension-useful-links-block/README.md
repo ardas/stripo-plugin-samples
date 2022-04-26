@@ -23,6 +23,7 @@
             ],
             "usefulLinksBlock": {
                 "enabled": true,
+                "maxCount": 2,
                 "items": [
                   {
                     "label": "Stripo demo editor",

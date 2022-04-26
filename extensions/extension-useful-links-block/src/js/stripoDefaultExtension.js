@@ -42,5 +42,8 @@ export default {
     },
 
     onBlockCopy(sourceBlock, targetBlock) {
+    },
+
+    onBlockDelete(block) {
     }
 }

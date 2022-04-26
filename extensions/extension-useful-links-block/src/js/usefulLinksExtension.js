@@ -19,9 +19,9 @@ export function createUsefulLinksExtension(stripoConfig, stripoApi, extensionBas
              usefulLinksBlocks.each(function() {
                  const block = stripoApi.jQuery(this);
                  updateLinks(block);
-
              });
         }
+        updateViewOnlyMode();
     }
 
     function updateLinks(block) {
@@ -41,10 +41,27 @@ export function createUsefulLinksExtension(stripoConfig, stripoApi, extensionBas
 
     function blockDropped(block) {
         updateLinks(block);
+        updateViewOnlyMode();
+    }
+
+    function onBlockCopy() {
+        updateViewOnlyMode();
+    }
+
+    function onBlockDelete() {
+        updateViewOnlyMode();
     }
 
     function getBlockLabel(block) {
         return stripoApi.translate('block.name');
+    }
+
+    function updateViewOnlyMode() {
+        if (stripoConfig.usefulLinksBlock && stripoConfig.usefulLinksBlock.maxCount) {
+            let actualBlocksCount = stripoApi.getFullDomTree().find(`.${BLOCK_UNIQUE_CLASS_NAME}`).length;
+            let isMoreThanAllowedBlocks = stripoConfig.usefulLinksBlock.maxCount <= actualBlocksCount;
+            stripoApi.setViewOnlyMode(isMoreThanAllowedBlocks);
+        }
     }
 
     return {
@@ -70,6 +87,8 @@ export function createUsefulLinksExtension(stripoConfig, stripoApi, extensionBas
         emailInitialized,
         getBlockLayoutToDrop,
         blockDropped,
+        onBlockCopy,
+        onBlockDelete,
         getBlockLabel
     }
 }
