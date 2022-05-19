@@ -1,0 +1,10 @@
+.esdev-app .form-control,
+.esdev-app .btn {
+    border-radius: 0px;
+}
+
+.esdev-app .btn-group.bootstrap-select,
+.esdev-app .input-group-btn:first-child .btn-group.bootstrap-select>button:first-child {
+    border-bottom-left-radius: 0 !important;
+    border-top-left-radius: 0 !important;
+}
