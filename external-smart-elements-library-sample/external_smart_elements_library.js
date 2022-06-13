@@ -69,7 +69,8 @@ window.ExternalSmartElementsLibrary = (function() {
     };
 
     return {
-        openLibrary: function(onDataSelectCallback, onCancelCallback) {
+        openLibrary: function(onDataSelectCallback, onCancelCallback, selectedModule) {
+            // selectedModule - selected jQuery DOM element
             dataSelectCallback = onDataSelectCallback;
             cancelCallback = onCancelCallback;
             renderLibrary();
