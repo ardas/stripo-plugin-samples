@@ -167,6 +167,7 @@ window.ExternalDisplayConditions = (function() {
             selectConditionsCallback({
                 name: 'Conditions applied',
                 description: 'Only users that fit conditions will see this part of the email.',
+                conditionsCount:  conditions.length,
                 beforeScript: '%IF ' + finalCondition + '%',
                 afterScript: '%/IF%'
             });
