@@ -79,7 +79,8 @@ in the field `globalName`. When being created, the extension receives as an inpu
   be displayed in the upper left area of ​​the block above the selection frame. As a parameter, the picked block is 
   passed as a jQuery object.
   * `getDefaultSettingsPanelState(block)` - allows passing the initial state or the service data to the controls 
-  when choosing a block. As a parameter, the picked block is passed as a jQuery object. 
+  when choosing a block. As a parameter, the picked block is passed as a jQuery object.
+  * `getViewOnlyModeTooltipText` - tooltip text for block in 'view only' mode
   * `onCleanLayout(bodyCheerioWrapper, cheerio)` - is called when an email is being compiled. Here you can clear 
   your layout code from extra code symbols and modify email body the way you like. As a parameter, the email body 
   is being passed as `cheerio-object` and `cheerio` itself for building outlines.

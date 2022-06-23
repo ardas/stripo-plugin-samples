@@ -64,6 +64,10 @@ export function createUsefulLinksExtension(stripoConfig, stripoApi, extensionBas
         }
     }
 
+    function getViewOnlyModeTooltipText() {
+        return stripoApi.translate('block.disabled', [stripoConfig.usefulLinksBlock.maxCount]);
+    }
+
     return {
         name: 'UsefulLinksDemoBlock',
         iconClass: 'es-icon-useful-links',
@@ -89,6 +93,7 @@ export function createUsefulLinksExtension(stripoConfig, stripoApi, extensionBas
         blockDropped,
         onBlockCopy,
         onBlockDelete,
-        getBlockLabel
+        getBlockLabel,
+        getViewOnlyModeTooltipText
     }
 }
