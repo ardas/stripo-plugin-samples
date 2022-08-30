@@ -191,7 +191,7 @@ export function createProductBlockExtension(stripoConfig, stripoApi, extensionBa
     function onCleanLayout(bodyCheerioWrapper, cheerio) {
         bodyCheerioWrapper.find(`.${PRODUCT_BLOCK_EMPTY_CLASS}`).parent().remove();
         bodyCheerioWrapper.find(`.${BLOCK_UNIQUE_CLASS_NAME}`).each(function() {
-            const blockWrapper = cheerio(this, null, null, {decodeEntities: false});
+            const blockWrapper = cheerio(this, undefined, undefined, {decodeEntities: false});
             blockWrapper.html(getLayoutWithoutDemoValues(blockWrapper.html()));
         });
     }
