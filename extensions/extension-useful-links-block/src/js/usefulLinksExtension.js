@@ -68,6 +68,10 @@ export function createUsefulLinksExtension(stripoConfig, stripoApi, extensionBas
         return stripoApi.translate('block.disabled', [stripoConfig.usefulLinksBlock.maxCount]);
     }
 
+    function getTooltipText() {
+        return stripoApi.translate('useful links extension');
+    }
+
     return {
         name: 'UsefulLinksDemoBlock',
         iconClass: 'es-icon-useful-links',
@@ -94,6 +98,7 @@ export function createUsefulLinksExtension(stripoConfig, stripoApi, extensionBas
         onBlockCopy,
         onBlockDelete,
         getBlockLabel,
-        getViewOnlyModeTooltipText
+        getViewOnlyModeTooltipText,
+        getTooltipText,
     }
 }
