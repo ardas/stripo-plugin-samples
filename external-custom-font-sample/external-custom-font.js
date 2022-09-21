@@ -51,12 +51,10 @@ window.ExternalCustomFont = (function() {
             if (!e.target.matches('.okButton')) {
                 return;
             }
-            const exampleOfMergeTagValue = e.target.getAttribute('tag-value');
             const name = externalCustomFont.querySelector('#fontName').value;
             const fontFamily = externalCustomFont.querySelector('#fontFamily').value;
             const url = externalCustomFont.querySelector('#fontUrl').value;
 
-            console.log('{name, fontFamily, url}', {name, fontFamily, url});
             callback({name, fontFamily, url});
             close();
         });
