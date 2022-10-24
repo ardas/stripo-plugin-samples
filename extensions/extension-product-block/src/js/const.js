@@ -8,6 +8,7 @@ export const ATTR_NAME_BLOCK_CONFIGURATION = `esd-dev-product-config`;
 export const CONTROL_NAME_PREFIX = `demoProductBlock`;
 export const CONTROL_NAME_BLOCK_BORDER = `${CONTROL_NAME_PREFIX}_blockBorder_control`;
 export const CONTROL_NAME_BLOCK_PADDING = `${CONTROL_NAME_PREFIX}_blockPadding_control`;
+export const CONTROL_NAME_BLOCK_ADAPT = `${CONTROL_NAME_PREFIX}_blockAdapt_control`;
 export const CONTROL_NAME_BLOCK_GROUPS = `${CONTROL_NAME_PREFIX}_blockGroups_control`;
 export const CONTROL_NAME_CARD_ORIENTATION = `${CONTROL_NAME_PREFIX}_cardOrientation_control`;
 export const CONTROL_NAME_CARDS_IN_ROW_COUNT = `${CONTROL_NAME_PREFIX}_cardsInRowCount_control`;
