@@ -6,6 +6,27 @@ window.ExternalPreviewPopup = (function() {
         externalPreviewPopup = null;
     };
 
+    var onMobileIframeLoaded = function() {
+        const frameDocument = document.getElementById('iframeMobile').contentDocument;
+        frameDocument.documentElement.style.setProperty('overflow-x', 'visible', 'important');
+
+        frameDocument.body.style.setProperty('overflow-y', 'scroll', 'important');
+        frameDocument.body.style.setProperty('visibility', 'visible', 'important');
+
+        const isAdaptive = !frameDocument.documentElement.querySelector('.gmail-fix');
+
+        if (!isAdaptive) {
+            const clientWidth = frameDocument.documentElement.clientWidth;
+            const scrollWidth = frameDocument.documentElement.scrollWidth;
+            const scale = (clientWidth / scrollWidth).toFixed(2);
+
+            frameDocument.documentElement.style.setProperty('height', '100%', 'important');
+            frameDocument.documentElement.style.setProperty('transform', `scale(${scale})`, 'important');
+            frameDocument.documentElement.style.setProperty('transform-origin', 'top left', 'important');
+            frameDocument.body.style.setProperty('overflow-x', 'hidden', 'important');
+        }
+    };
+
     var initPreviewPopup = function() {
         var div = document.createElement('div');
         div.innerHTML = '\
@@ -48,6 +69,8 @@ window.ExternalPreviewPopup = (function() {
 
         externalPreviewPopup = document.getElementById('externalPreviewPopup');
         externalPreviewPopup.querySelector('.close').addEventListener('click', close);
+
+        document.getElementById('iframeMobile').addEventListener('load', onMobileIframeLoaded);
     };
 
     var openPreviewPopup = function(html, ampHtml) {
