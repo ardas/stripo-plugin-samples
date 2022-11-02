@@ -2,6 +2,7 @@ import {
     ATTR_NAME_BLOCK_CONFIGURATION,
     ATTR_NAME_RECOMMENDATION_GROUPS,
     BLOCK_UNIQUE_CLASS_NAME,
+    CONTROL_NAME_BLOCK_ADAPT,
     CONTROL_NAME_BLOCK_GROUPS, CONTROL_NAME_BLOCK_PADDING,
     CONTROL_NAME_CARD_BACKGROUND_COLOR,
     CONTROL_NAME_CARD_BORDER,
@@ -42,6 +43,7 @@ import cardButtonInternalPaddingControl from './controls/composition/cardButtonI
 import cardTextLineSpacingControl from './controls/composition/cardTextLineSpacingControl';
 import cardButtonBorderControl from './controls/composition/cardButtonBorderControl';
 import cardImageSizeControl from './controls/composition/cardImageSizeControl';
+import blockAdaptControl from './controls/blockAdaptControl';
 
 
 export function createProductBlockExtension(stripoConfig, stripoApi, extensionBasePath) {
@@ -237,6 +239,7 @@ export function createProductBlockExtension(stripoConfig, stripoApi, extensionBa
             {control: cardBorderControl, parentControlName: 'stripoBorderControl'},
             {control: cardOrientationControl},
             {control: cardsInRowCountControl},
+            {control: blockAdaptControl, parentControlName: 'stripoStructureAdaptControl'},
             {control: cardCompositionControl},
             {control: blockGroupsControl},
             {control: cardImageSizeControl, parentControlName: 'stripoImageSizeControl'},
@@ -260,6 +263,7 @@ export function createProductBlockExtension(stripoConfig, stripoApi, extensionBa
             CONTROL_NAME_BLOCK_GROUPS,
             CONTROL_NAME_CARD_ORIENTATION,
             CONTROL_NAME_CARDS_IN_ROW_COUNT,
+            CONTROL_NAME_BLOCK_ADAPT,
             CONTROL_NAME_BLOCK_PADDING,
             CONTROL_NAME_CARD_BACKGROUND_COLOR,
             CONTROL_NAME_CARD_BORDER,
