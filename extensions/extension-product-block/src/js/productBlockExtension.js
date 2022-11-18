@@ -3,7 +3,8 @@ import {
     ATTR_NAME_RECOMMENDATION_GROUPS,
     BLOCK_UNIQUE_CLASS_NAME,
     CONTROL_NAME_BLOCK_ADAPT,
-    CONTROL_NAME_BLOCK_GROUPS, CONTROL_NAME_BLOCK_PADDING,
+    CONTROL_NAME_BLOCK_GROUPS,
+    CONTROL_NAME_BLOCK_PADDING,
     CONTROL_NAME_CARD_BACKGROUND_COLOR,
     CONTROL_NAME_CARD_BORDER,
     CONTROL_NAME_CARD_COMPOSITION,
@@ -14,27 +15,27 @@ import {
     ORIENTATION_VERTICAL,
     PRODUCT_BLOCK_EMPTY_CLASS
 } from './const';
-import translations from "./translations";
-import cardBackgroundColorControl from "./controls/cardBackgroundColorControl";
-import cardBorderControl from "./controls/cardBorderControl";
-import cardOrientationControl from "./controls/cardOrientationControl";
-import cardsInRowCountControl from "./controls/cardsInRowCountControl";
-import cardCompositionControl from "./controls/cardCompositionControl";
-import blockGroupsControl from "./controls/blockGroupsControl";
-import cardTextColorControl from "./controls/composition/cardTextColorControl";
-import cardTextAlignControl from "./controls/composition/cardTextAlignControl";
-import cardTextStyleControl from "./controls/composition/cardTextStyleControl";
-import cardButtonColorControl from "./controls/composition/cardButtonColorControl";
-import cardButtonStyleControl from "./controls/composition/cardButtonStyleControl";
-import cardButtonTextControl from "./controls/composition/cardButtonTextControl";
-import cardButtonTextColorControl from "./controls/composition/cardButtonTextColorControl";
-import cardButtonBorderRadiusControl from "./controls/composition/cardButtonBorderRadiusControl";
-import cardButtonAlignControl from "./controls/composition/cardButtonAlignControl";
-import cardButtonStretchControl from "./controls/composition/cardButtonStretchControl";
-import {createBlockConfigurationService} from "./blockConfiguration";
-import verticalContainerLayout from "./layout/verticalContainerLayout.html";
-import horizontalStructureLayout from "./layout/horizontalStructureLayout.html";
-import defaultLayout from "./layout/defaultLayout.html";
+import translations from './translations';
+import cardBackgroundColorControl from './controls/cardBackgroundColorControl';
+import cardBorderControl from './controls/cardBorderControl';
+import cardOrientationControl from './controls/cardOrientationControl';
+import cardsInRowCountControl from './controls/cardsInRowCountControl';
+import cardCompositionControl from './controls/cardCompositionControl';
+import blockGroupsControl from './controls/blockGroupsControl';
+import cardTextColorControl from './controls/composition/cardTextColorControl';
+import cardTextAlignControl from './controls/composition/cardTextAlignControl';
+import cardTextStyleControl from './controls/composition/cardTextStyleControl';
+import cardButtonColorControl from './controls/composition/cardButtonColorControl';
+import cardButtonStyleControl from './controls/composition/cardButtonStyleControl';
+import cardButtonTextControl from './controls/composition/cardButtonTextControl';
+import cardButtonTextColorControl from './controls/composition/cardButtonTextColorControl';
+import cardButtonBorderRadiusControl from './controls/composition/cardButtonBorderRadiusControl';
+import cardButtonAlignControl from './controls/composition/cardButtonAlignControl';
+import cardButtonStretchControl from './controls/composition/cardButtonStretchControl';
+import {createBlockConfigurationService} from './blockConfiguration';
+import verticalContainerLayout from './layout/verticalContainerLayout.html';
+import horizontalStructureLayout from './layout/horizontalStructureLayout.html';
+import defaultLayout from './layout/defaultLayout.html';
 import blockBorderControl from './controls/blockBorderControl';
 import blockPaddingControl from './controls/blockPaddingControl';
 import cardTextPaddingControl from './controls/composition/cardTextPaddingControl';
@@ -44,6 +45,9 @@ import cardTextLineSpacingControl from './controls/composition/cardTextLineSpaci
 import cardButtonBorderControl from './controls/composition/cardButtonBorderControl';
 import cardImageSizeControl from './controls/composition/cardImageSizeControl';
 import blockAdaptControl from './controls/blockAdaptControl';
+import cardButtonHoverColorControl from './controls/composition/cardButtonHoverColorControl';
+import cardButtonBorderHoverControl from './controls/composition/cardButtonBorderHoverControl';
+import cardButtonTextColorHoverControl from './controls/composition/cardButtonTextColorHoverControl';
 
 
 export function createProductBlockExtension(stripoConfig, stripoApi, extensionBasePath) {
@@ -249,10 +253,13 @@ export function createProductBlockExtension(stripoConfig, stripoApi, extensionBa
             {control: cardTextLineSpacingControl, parentControlName: 'stripoTextLineSpacingControl'},
             {control: cardTextPaddingControl, parentControlName: 'stripoPaddingСontrol'},
             {control: cardButtonColorControl, parentControlName: 'stripoButtonColorControl'},
+            {control: cardButtonHoverColorControl, parentControlName: 'stripoButtonHoverColorControl'},
             {control: cardButtonStyleControl, parentControlName: 'stripoButtonStyleControl'},
             {control: cardButtonTextControl, parentControlName: 'stripoButtonTextControl'},
             {control: cardButtonTextColorControl, parentControlName: 'stripoButtonTextColorControl'},
             {control: cardButtonBorderControl, parentControlName: 'stripoButtonBorderControl'},
+            {control: cardButtonBorderHoverControl, parentControlName: 'stripoButtonBorderHoverControl'},
+            {control: cardButtonTextColorHoverControl, parentControlName: 'stripoButtonTextColorHoverControl'},
             {control: cardButtonBorderRadiusControl, parentControlName: 'stripoButtonBorderRadiusControl'},
             {control: cardButtonAlignControl, parentControlName: 'stripoButtonAlignControl'},
             {control: cardButtonStretchControl, parentControlName: 'stripoButtonStretchControl'},
