@@ -1,0 +1,10 @@
+{
+    "Stripo": {
+        "EmailRenderApi":{
+                "baseUrl": "https://notification-email-render-apis.qa.cnxloyalty.com"
+        },
+        "NotificationsBlocks":{
+            "baseUrl":"https://notifications-block.qa.cnxloyalty.com/api/v1.0/"
+        }
+    }
+}

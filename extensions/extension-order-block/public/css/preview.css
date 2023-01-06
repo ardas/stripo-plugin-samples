@@ -1,0 +1,43 @@
+@font-face {
+    font-family:OpenSans-Semibold;
+    font-style: normal;
+    font-weight: normal;
+    src: url('https://notifications-email-builder.qa.cnxloyalty.com/assets/webfonts/OpenSans-Semibold.woff') format('woff');
+}
+@font-face {
+    font-family:OpenSans-Regular;
+    font-style: normal;
+    font-weight: normal;
+    src: url('https://notifications-email-builder.qa.cnxloyalty.com/assets/webfonts/OpenSans-Regular.woff') format('woff');
+}
+@font-face {
+    font-family:Arial-BoldMT;
+    font-style: normal;
+    font-weight: normal;
+    src: url('https://notifications-email-builder.qa.cnxloyalty.com/assets/webfonts/Arial-BoldMT.woff') format('woff');
+}
+@font-face {
+    font-family:ArialMT ;
+    font-style: normal;
+    font-weight: normal;
+    src: url('https://notifications-email-builder.qa.cnxloyalty.com/assets/webfonts/ArialMT.woff') format('woff');
+}
+@font-face {
+    font-family:ProximaNova-Semibold;
+    font-style: normal;
+    font-weight: normal;
+    src: url('https://notifications-email-builder.qa.cnxloyalty.com/assets/webfonts/ProximaNova-Semibold.woff') format('woff');
+}
+@font-face {
+    font-family:Proximanova-Regular;
+    font-style: normal;
+    font-weight: normal;
+    src: url('https://notifications-email-builder.qa.cnxloyalty.com/assets/webfonts/ProximaNovaRegular.woff') format('woff');
+}
+
+@font-face {
+    font-family:ProximaNova-Bold;
+    font-style: normal;
+    font-weight: normal;
+    src: url('https://notifications-email-builder.qa.cnxloyalty.com/assets/webfonts/ProximaNovaBold.woff') format('woff');
+}
