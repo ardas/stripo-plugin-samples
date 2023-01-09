@@ -4,7 +4,7 @@
   "description": "Stripo Extension",
   "main": "index.js",
   "scripts": {
-    "start": "cross-env NODE_ENV=development webpack-dev-server --config config/webpack.dev.js",
+    "start": "cross-env NODE_ENV=development webpack serve --config config/webpack.dev.js",
     "build": "cross-env NODE_ENV=production webpack --config config/webpack.prod.js"
   },
   "devDependencies": {
@@ -22,8 +22,8 @@
     "raw-loader": "^4.0.1",
     "terser-webpack-plugin": "^2.3.5",
     "webpack": "^5.75.0",
-    "webpack-cli": "^5.0.1",
-    "webpack-dev-server": "^3.10.3",
+    "webpack-cli": "^4.3.1",
+    "webpack-dev-server": "^4.9.0",
     "webpack-merge": "^4.2.2"
   }
 }
