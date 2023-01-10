@@ -1,22 +1,27 @@
 import {
-    CONTROL_NAME_CARD_BUTTON_ALIGN, CONTROL_NAME_CARD_BUTTON_BORDER,
+    CONTROL_NAME_CARD_BUTTON_ALIGN,
+    CONTROL_NAME_CARD_BUTTON_BORDER,
+    CONTROL_NAME_CARD_BUTTON_BORDER_HOVER,
     CONTROL_NAME_CARD_BUTTON_BORDER_RADIUS,
     CONTROL_NAME_CARD_BUTTON_COLOR,
     CONTROL_NAME_CARD_BUTTON_EXTERNAL_PADDING,
+    CONTROL_NAME_CARD_BUTTON_HOVER_COLOR,
     CONTROL_NAME_CARD_BUTTON_INTERNAL_PADDING,
-    CONTROL_NAME_CARD_BUTTON_PADDING,
     CONTROL_NAME_CARD_BUTTON_STRETCH,
     CONTROL_NAME_CARD_BUTTON_STYLE,
     CONTROL_NAME_CARD_BUTTON_TEXT,
     CONTROL_NAME_CARD_BUTTON_TEXT_COLOR,
-    CONTROL_NAME_CARD_COMPOSITION, CONTROL_NAME_CARD_IMAGE_SIZE,
+    CONTROL_NAME_CARD_BUTTON_TEXT_HOVER_COLOR,
+    CONTROL_NAME_CARD_COMPOSITION,
+    CONTROL_NAME_CARD_IMAGE_SIZE,
     CONTROL_NAME_CARD_TEXT_ALIGN,
-    CONTROL_NAME_CARD_TEXT_COLOR, CONTROL_NAME_CARD_TEXT_LINE_SPACING,
+    CONTROL_NAME_CARD_TEXT_COLOR,
+    CONTROL_NAME_CARD_TEXT_LINE_SPACING,
     CONTROL_NAME_CARD_TEXT_PADDING,
     CONTROL_NAME_CARD_TEXT_STYLE,
     ORIENTATION_VERTICAL
 } from '../const';
-import baseControl from "./baseControl";
+import baseControl from './baseControl';
 
 const HIDDEN_AREA_CLASS = 'hidden-area';
 const VARIABLE_CONTROLS = {
@@ -55,11 +60,14 @@ const VARIABLE_CONTROLS = {
         CONTROL_NAME_CARD_BUTTON_TEXT,
         CONTROL_NAME_CARD_BUTTON_STYLE,
         CONTROL_NAME_CARD_BUTTON_COLOR,
+        CONTROL_NAME_CARD_BUTTON_HOVER_COLOR,
         CONTROL_NAME_CARD_BUTTON_TEXT_COLOR,
+        CONTROL_NAME_CARD_BUTTON_TEXT_HOVER_COLOR,
         CONTROL_NAME_CARD_BUTTON_BORDER_RADIUS,
         CONTROL_NAME_CARD_BUTTON_ALIGN,
         CONTROL_NAME_CARD_BUTTON_STRETCH,
         CONTROL_NAME_CARD_BUTTON_BORDER,
+        CONTROL_NAME_CARD_BUTTON_BORDER_HOVER,
         CONTROL_NAME_CARD_BUTTON_INTERNAL_PADDING,
         CONTROL_NAME_CARD_BUTTON_EXTERNAL_PADDING
     ]
@@ -233,9 +241,13 @@ export default {
             const container = this.jItemsContainer.find(`#product${variable}Option`);
             const controls = VARIABLE_CONTROLS[variable];
             for (let i = 0; i < controls.length; i++) {
+                const control = this.createInternalControl(controls[i]);
+                if (!control || (control.displayControl && !control.displayControl())) {
+                    continue;
+                }
                 const markup = `<div class="product-composition-internal-control product-composition-internal-control-${variableItem.variable}-${i}"></div>`;
                 container.append(markup);
-                const control = this.createInternalControl(controls[i]);
+
                 if (control) {
                     control.initializeCompositionInternalControl(variableItem.variable, variableItem.visibilityAreaSelector);
                     this.internalControls.push(control);
