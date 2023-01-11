@@ -21,6 +21,14 @@
             padding: 5px 10px;
             border-color: grey;
         }
+        .esdev-app .esdev-block-wrapper.disabled {
+            cursor: help !important;
+        }
+
+        .esdev-app .esdev-block-wrapper.disabled .ui-draggable {
+            cursor: help !important;
+        }
+
     </style>
 </head>
 <body>
@@ -74,9 +82,10 @@
         const script = document.createElement('script');
         script.id = 'stripoScript';
         script.type = 'text/javascript';
-        script.src = 'https://plugins.stripo.email/static/latest/stripo.js';
+        script.src = 'http://localhost:3000/stripo.js';
         script.onload = function () {
             window.Stripo.init({
+                apiBaseUrl: 'https://stripo-plugin-dev.devel.ardas.dp.ua/api/v1',
                 settingsId: 'stripoSettingsContainer',
                 previewId: 'stripoPreviewContainer',
                 codeEditorButtonId: 'codeEditor',
@@ -86,6 +95,27 @@
                 externalCustomFont: window.ExternalCustomFont,
                 addCustomFontTitle: 'Add custom font',
                 ignoreClickOutsideSelectors: '#externalFileLibrary',
+                extensions: [
+                    {
+                        globalName: "ProductBlockExtension",
+                        url:"http://localhost:5008/main.extension.js"
+                    }
+                ],
+                productDemoBlock: {
+                    enabled: true,
+                    groups: [
+                        {
+                            id: "group1",
+                            name: "iPhone X",
+                            count: 5
+                        },
+                        {
+                            id: "group2",
+                            name: "MacBook Pro",
+                            count: 1
+                        }
+                    ]
+                },
                 editorFonts: {
                   showDefaultStandardFonts: true,
                   showDefaultNotStandardFonts: true,
@@ -104,10 +134,10 @@
                 },
                 apiRequestData: apiRequestData,
               getAuthToken: function (callback) {
-                request('POST', 'https://plugins.stripo.email/api/v1/auth',
+                request('POST', 'https://stripo-plugin-dev.devel.ardas.dp.ua/api/v1/auth',
                   JSON.stringify({
-                    pluginId: 'YOUR_PLUGIN_ID',
-                    secretKey: 'YOUR_SECRET_KEY'
+                    pluginId: '1e74a83072e64f099b74fe1e1cc0ac58',
+                    secretKey: '0db23ee844914224a717321070f6096c'
                   }),
                   function(data) {
                     callback(JSON.parse(data).token);

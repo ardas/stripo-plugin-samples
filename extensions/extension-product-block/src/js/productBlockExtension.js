@@ -58,6 +58,7 @@ export function createProductBlockExtension(stripoConfig, stripoApi, extensionBa
     }
 
     function emailInitialized(emailBody) {
+        stripoApi.setViewOnlyMode(true);
         const productBlocks = emailBody.find(`.${BLOCK_UNIQUE_CLASS_NAME}[${ATTR_NAME_RECOMMENDATION_GROUPS}]`);
         if (productBlocks.length) {
             const stripoConfigGroups = stripoConfig.productDemoBlock.groups;
