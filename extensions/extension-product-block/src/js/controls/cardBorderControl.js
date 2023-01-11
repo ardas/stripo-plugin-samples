@@ -11,6 +11,7 @@ export default {
     ...baseControl,
     name: CONTROL_NAME_CARD_BORDER,
     themeKey: 'cardBorder',
+    useSeparateControls: false,
 
     getLabel() {
         return this.translate('settings.controls.cardBorder.label');
