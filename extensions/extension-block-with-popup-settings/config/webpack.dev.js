@@ -25,12 +25,10 @@ module.exports = merge(common, {
    */
   devServer: {
     historyApiFallback: true,
-    contentBase: paths.build,
     open: true,
     compress: true,
     hot: true,
     port: 3005,
-    disableHostCheck: true,
     headers: {
       "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
