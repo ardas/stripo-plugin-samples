@@ -359,7 +359,8 @@ Usage:
 
             getDomElementsToApplyValue() { // specifies the DOM-elements within the block to which the control values should be applied
                 return this.initialDomElement.querySelectorAll('...')
-            }
+            },
+            useSeparateControls: false, /* true to have ability to use own control for each side (left, top, right, bottom); false - to use one control for all sides only */
         }, 
         "parentControlName": "stripoBorderControl"
     }
