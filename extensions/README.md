@@ -102,6 +102,7 @@ translate(key, params) | returns translation by the `key` key and the `params` p
 triggerEvent(eventType, eventData) | generates an `eventType` event and with `eventData` data
 updateStructureLayoutForHorizontalOrientation(block, sampleStructureLayout, configuration) | is used for the `multi-orientation` block type to form the appearance of the block with horizontal orientation according to the sample layout of the `sampleStructureLayout` structure and the specified `configuration` config 
 updateStructureLayoutForVerticalOrientation(block, sampleContainerLayout, configuration) | is used for the `multi-orientation` block type to form the appearance of the block with vertical orientation according to the sample layout of the `sampleContainerLayout` container and the specified `configuration` config 
+updateImagesWidth(jElement) | is used for recalculating width of images inside jQuery element
 
 The `updateStructureLayoutForHorizontalOrientation` and `updateStructureLayoutForVerticalOrientation` functions require the `configuration`, 
 parameter, which determines the appearance of the resulting block. The configuration is represented as the JSON-object:
