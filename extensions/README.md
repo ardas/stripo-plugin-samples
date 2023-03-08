@@ -1014,3 +1014,26 @@ When using the `updateControlValue` function, you need to pass a value as a para
 ```
     this.updateControlValue({height: 200});
 ```
+
+#### "Background Image"
+
+Sets background image.
+
+Usage:
+```
+    {
+        "control": {
+            name: 'name of the created control',            
+        }, 
+        "parentControlName": "stripoBackgroundImageControl"
+    }
+```
+
+When using the `updateControlValue` function, you need to pass a value as a parameter, as shown below:
+```
+    this.updateControlValue({
+       imgSrc: 'https://zwkxy.stripocdn.email/content/guids/CABINET_80619585373008ccbd676e26eafdcef100affcb394115531a3fb16f023f2c229/images/052ace8f71f143af9b9854a33e474eea.jpeg',
+       imgPosition: 'left top',
+       isImgRepeat: false
+    });
+```
