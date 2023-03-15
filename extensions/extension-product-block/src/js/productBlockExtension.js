@@ -111,6 +111,41 @@ export function createProductBlockExtension(stripoConfig, stripoApi, extensionBa
         ];
     }
 
+    function getSelectedProductValues(selectedProduct) {
+        if(selectedProduct){
+            return [
+                {key: '#PRODUCT_IMAGE_SRC#', value: selectedProduct.image_url },
+                {key: '#PRODUCT_VENDOR_CODE#', value: stripoApi.translate('preview.layout.demo.vendorCode', [selectedProduct.vendorCode || 5803701783])},
+                {key: '#PRODUCT_TITLE#', value: selectedProduct.name},
+                {key: '#PRODUCT_PRICE#', value: selectedProduct.price || '1 234 ₽'},
+                {key: '#PRODUCT_DIMENSIONS#', value: stripoApi.translate('preview.layout.demo.dimensions', selectedProduct.dimensions || [430, 32, 149])},
+                {key: '#PRODUCT_BUTTON_TEXT#', value: stripoApi.translate('preview.layout.demo.button'), skipDecode: true},
+                {key: '#PRODUCT_HREF#', value: selectedProduct.product_url},
+            ];
+        }
+        return [];
+    }
+
+    function getLayoutWithSelectedProductValues(layout, selectedProduct) {
+        let result = layout;
+
+        getSelectedProductValues(selectedProduct).forEach(item => {
+            result = result.replace(new RegExp(item.key,"g"), item.value);
+        });
+        return result
+    }
+
+    function getBlocks(groups, layout) {
+        const blocks = [];
+        groups.forEach(product => {
+            const productLayout = getLayoutWithSelectedProductValues(layout, product);
+            for (let i = 0; i < product.count; i++) {
+                blocks.push(productLayout);
+            }
+        });
+        return blocks;
+    }
+
     function getLayoutWithDemoValues(layout) {
         let result = layout;
         getDemoValues().forEach(item => {
@@ -135,10 +170,10 @@ export function createProductBlockExtension(stripoConfig, stripoApi, extensionBa
         } else {
             switch (blockConfig.orientation) {
                 case ORIENTATION_VERTICAL:
-                    stripoApi.updateStructureLayoutForVerticalOrientation(jStructure, getLayoutWithDemoValues(verticalContainerLayout), blockConfig);
+                    stripoApi.updateStructureLayoutForVerticalOrientation(jStructure, getBlocks(blockConfig.groups, verticalContainerLayout), blockConfig);
                     break;
                 case ORIENTATION_HORIZONTAL:
-                    stripoApi.updateStructureLayoutForHorizontalOrientation(jStructure, getLayoutWithDemoValues(horizontalStructureLayout), blockConfig);
+                    stripoApi.updateStructureLayoutForHorizontalOrientation(jStructure, getBlocks(blockConfig.groups, horizontalStructureLayout), blockConfig);
                     break;
             }
         }
