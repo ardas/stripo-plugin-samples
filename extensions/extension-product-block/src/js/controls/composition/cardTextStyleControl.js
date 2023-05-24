@@ -5,6 +5,7 @@ export default {
     ...baseCompositionInternalControl,
     name: CONTROL_NAME_CARD_TEXT_STYLE,
     themeKey: 'textStyle',
+    underlineAvailable: true,
 
     getDomElementsToApplyValue() {
         return this.initialDomElement.querySelectorAll(`${this.visibilityAreaSelector} p`);
