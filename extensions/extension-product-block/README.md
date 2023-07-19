@@ -4,7 +4,7 @@
 
 1. Install dependencies
      ```
-     npm ci
+     npm i
      ```
    2. Compile this code
        ```bash
