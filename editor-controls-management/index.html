@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Stripo Plugin Example</title>
+    <style>
+        #externalSystemContainer {
+            background-color: darkgrey;
+            padding: 5px 0 5px 20px;
+        }
+        #stripoSettingsContainer {
+            width: 400px;
+            float: left;
+        }
+        #stripoPreviewContainer {
+            width: calc(100% - 400px);
+            float: left;
+        }
+        .control-button {
+            border-radius: 17px;
+            padding: 5px 10px;
+            border-color: grey;
+        }
+    </style>
+</head>
+<body>
+<div id="externalSystemContainer">
+    <!--This is external system container where you can place plugin buttons -->
+    <button id="codeEditor" class="control-button">Code editor</button>
+</div>
+<div>
+    <!--Plugin containers -->
+    <div id="stripoSettingsContainer">Loading...</div>
+    <div id="stripoPreviewContainer"></div>
+</div>
+
+<script>
+    // Utility methods
+    function request(method, url, data, callback) {
+        var req = new XMLHttpRequest();
+        req.onreadystatechange = function () {
+            if (req.readyState === 4 && req.status === 200) {
+                callback(req.responseText);
+            } else if (req.readyState === 4 && req.status !== 200) {
+                console.error('Can not complete request. Please check you entered a valid PLUGIN_ID and SECRET_KEY values');
+            }
+        };
+        req.open(method, url, true);
+        if (method !== 'GET') {
+            req.setRequestHeader('content-type', 'application/json');
+        }
+        req.send(data);
+    }
+
+    function loadDemoTemplate(callback) {
+        request('GET', 'https://raw.githubusercontent.com/ardas/stripo-plugin/master/Public-Templates/Basic-Templates/Trigger%20newsletter%20mockup/Trigger%20newsletter%20mockup.html', null, function(html) {
+            request('GET', 'https://raw.githubusercontent.com/ardas/stripo-plugin/master/Public-Templates/Basic-Templates/Trigger%20newsletter%20mockup/Trigger%20newsletter%20mockup.css', null, function(css) {
+                callback({html: html, css: css});
+            });
+        });
+    }
+</script>
+
+<script>
+    // Call this function to start plugin.
+    // For security reasons it is STRONGLY recommended NOT to store your PLUGIN_ID and SECRET_KEY on client side.
+    // Please use backend middleware to authenticate plugin.
+    // See documentation: https://stripo.email/plugin-api/
+    function initPlugin(template) {
+        const apiRequestData = {
+            emailId: 123
+        };
+        const script = document.createElement('script');
+        script.id = 'stripoScript';
+        script.type = 'text/javascript';
+        // script.src = 'https://plugins.stripo.email/static/latest/stripo.js';
+        script.src = 'http://localhost:3000/stripo.js';
+        script.onload = function () {
+
+            window.Stripo.init({
+                settingsId: 'stripoSettingsContainer',
+                previewId: 'stripoPreviewContainer',
+                codeEditorButtonId: 'codeEditor',
+                locale: 'en',
+                html: template.html,
+                css: template.css,
+                apiRequestData: apiRequestData,
+                getAuthToken: function (callback) {
+                    request('POST', 'https://plugins.stripo.email/api/v1/auth',
+                        JSON.stringify({
+                            pluginId: 'YOUR_PLUGIN_ID',
+                            secretKey: 'YOUR_SECRET_KEY'
+                        }),
+                        function(data) {
+                            callback(JSON.parse(data).token);
+                        });
+                }
+            }, function() {
+                const removeDefaultControl = (rawControls, controlNameToRemove) => rawControls.splice(rawControls.indexOf(rawControls.find(c => c.name == controlNameToRemove)), 1);
+
+                window.StripoApi.initExternalSettingControls = function(rawControls) {
+                    // Log the full list of Stripo controls
+                    console.log('Controls: ', rawControls.map(c=>c.name));
+
+                    // Remove default Text block's 'Line spacing' control
+                    removeDefaultControl(rawControls, 'textIntervalSettingsControl');
+
+                    // Register custom control. Keys: 'name' and 'render' should be defined
+                    rawControls.push({
+                        name: 'textBlockCustomControl',
+                        render: function () {
+                            this.jContainer.html(`<div class="form-group">
+                                <label for="textCustomExampleControlButton" class="col-xs-6 control-label">Custom Text Control</label>
+                                <div class="col-xs-6">
+                                    <button id="textCustomExampleControlButton" class="btn btn-success pull-right">Insert Text</button>
+                                </div>
+                            </div>`);
+
+                            this.jContainer.on('click', `#textCustomExampleControlButton`, ()=> {
+                                this.jElement.html(this.jElement.html() + '<p>Text example paragraph</p>');
+                            });
+                        }
+                    });
+                }
+
+                window.StripoApi.initExternalSettingsPanels = function(rawPanels) {
+                    // Find Text block's settings panel
+                    const textBlockSettingsPanel = rawPanels.find(p => p.name == 'textBlockSettingsPanel');
+
+                    // Add custom control to the settings panel as the first control
+                    textBlockSettingsPanel.controls.unshift('textBlockCustomControl');
+                }
+
+                window.StripoApi.initExternalSettingAppearanceControls = function(rawControls) {
+                    console.log('Appearance Controls: ', rawControls.map(c=>c.name));
+
+                    // Remove default Appearance 'Message alignment' control
+                    removeDefaultControl(rawControls, 'messageAlignAppearanceControl');
+                }
+            });
+        };
+        document.body.appendChild(script);
+    }
+
+    loadDemoTemplate(initPlugin);
+</script>
+</body>
+</html>
