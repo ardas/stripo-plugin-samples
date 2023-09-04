@@ -105,7 +105,7 @@ export function createProductBlockExtension(stripoConfig, stripoApi, extensionBa
             {key: '#PRODUCT_IMAGE_SRC#', value: `${extensionBasePath}/assets/images/image-placeholder.png`},
             {key: '#PRODUCT_TITLE#', value: stripoApi.translate('preview.layout.demo.name')},
             {key: '#PRODUCT_VENDOR_CODE#', value: stripoApi.translate('preview.layout.demo.vendorCode', [5803701783])},
-            {key: '#PRODUCT_PRICE#', value: '1 234 ₽'},
+            {key: '#PRODUCT_PRICE#', value: '1 234 $'},
             {key: '#PRODUCT_DIMENSIONS#', value: stripoApi.translate('preview.layout.demo.dimensions', [430, 32, 149])},
             {key: '#PRODUCT_BUTTON_TEXT#', value: stripoApi.translate('preview.layout.demo.button'), skipDecode: true}
         ];
@@ -117,7 +117,7 @@ export function createProductBlockExtension(stripoConfig, stripoApi, extensionBa
                 {key: '#PRODUCT_IMAGE_SRC#', value: selectedProduct.image_url },
                 {key: '#PRODUCT_VENDOR_CODE#', value: stripoApi.translate('preview.layout.demo.vendorCode', [selectedProduct.vendorCode || 5803701783])},
                 {key: '#PRODUCT_TITLE#', value: selectedProduct.name},
-                {key: '#PRODUCT_PRICE#', value: selectedProduct.price || '1 234 ₽'},
+                {key: '#PRODUCT_PRICE#', value: selectedProduct.price || '1 234 $'},
                 {key: '#PRODUCT_DIMENSIONS#', value: stripoApi.translate('preview.layout.demo.dimensions', selectedProduct.dimensions || [430, 32, 149])},
                 {key: '#PRODUCT_BUTTON_TEXT#', value: stripoApi.translate('preview.layout.demo.button'), skipDecode: true},
                 {key: '#PRODUCT_HREF#', value: selectedProduct.product_url},
@@ -165,6 +165,7 @@ export function createProductBlockExtension(stripoConfig, stripoApi, extensionBa
     }
 
     function updateLayout(jStructure, blockConfig) {
+        console.log('updateLayout', jStructure, blockConfig);
         if (!jStructure.attr(ATTR_NAME_RECOMMENDATION_GROUPS)) {
             stripoApi.updateStructureLayoutForHorizontalOrientation(jStructure, getDefaultLayout(), blockConfig);
         } else {
