@@ -165,7 +165,6 @@ export function createProductBlockExtension(stripoConfig, stripoApi, extensionBa
     }
 
     function updateLayout(jStructure, blockConfig) {
-        console.log('updateLayout', jStructure, blockConfig);
         if (!jStructure.attr(ATTR_NAME_RECOMMENDATION_GROUPS)) {
             stripoApi.updateStructureLayoutForHorizontalOrientation(jStructure, getDefaultLayout(), blockConfig);
         } else {
