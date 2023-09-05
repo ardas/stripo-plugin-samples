@@ -11,8 +11,15 @@ export default {
     },
 
     applyThemeFromConfig() {
-        if (this.themeKey && this.isControlVisible() && this.panelState.blockConfig.theme[this.themeKey]) {
-            this.updateControlValue(this.panelState.blockConfig.theme[this.themeKey]);
+        if (!this.isControlVisible()) {
+            return;
+        }
+        this.updateControlValue(this.getThemeValueFromConfig());
+    },
+
+    getThemeValueFromConfig() {
+        if (this.themeKey && this.panelState.blockConfig.theme[this.themeKey]) {
+            return this.panelState.blockConfig.theme[this.themeKey];
         }
     },
 
