@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Stripo Plugin Example</title>
+    <style>
+        #externalSystemContainer {
+            background-color: darkgrey;
+            padding: 5px 0 5px 20px;
+        }
+        #undoButton, #redoButton {
+            display: none;
+        }
+        #stripoSettingsContainer {
+            width: 400px;
+            float: left;
+        }
+        #stripoPreviewContainer {
+            width: calc(100% - 400px);
+            float: left;
+        }
+        .notification-zone {
+            position: fixed;
+            width: 400px;
+            z-index: 99999;
+            right: 20px;
+            bottom: 80px;
+        }
+        .control-button {
+            border-radius: 17px;
+            padding: 5px 10px;
+            border-color: grey;
+        }
+        #changeHistoryLink {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div id="externalSystemContainer">
+        <!--This is external system container where you can place plugin buttons -->
+        <button id="undoButton" class="control-button">Undo</button>
+        <button id="redoButton" class="control-button">Redo</button>
+        <button id="codeEditor" class="control-button">Code editor</button>
+        <span id="changeHistoryContainer" style="display: none;">Last change: <a id="changeHistoryLink"></a></span>
+    </div>
+    <div>
+        <!--Plugin containers -->
+        <div id="stripoSettingsContainer">Loading...</div>
+        <div id="stripoPreviewContainer"></div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js" integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30=" crossorigin="anonymous"></script>
+
+    <script>
+        // Utility methods
+        function request(method, url, data, callback) {
+            var req = new XMLHttpRequest();
+            req.onreadystatechange = function () {
+                if (req.readyState === 4 && req.status === 200) {
+                    callback(req.responseText);
+                } else if (req.readyState === 4 && req.status !== 200) {
+                    console.error('Can not complete request. Please check you entered a valid PLUGIN_ID and SECRET_KEY values');
+                }
+            };
+            req.open(method, url, true);
+            if (method !== 'GET') {
+                req.setRequestHeader('content-type', 'application/json');
+            }
+            req.send(data);
+        }
+
+        function loadDemoTemplate(callback) {
+            request('GET', 'https://raw.githubusercontent.com/ardas/stripo-plugin/master/Public-Templates/Basic-Templates/Trigger%20newsletter%20mockup/Trigger%20newsletter%20mockup.html', null, function(html) {
+                request('GET', 'https://raw.githubusercontent.com/ardas/stripo-plugin/master/Public-Templates/Basic-Templates/Trigger%20newsletter%20mockup/Trigger%20newsletter%20mockup.css', null, function(css) {
+                    callback({html: html, css: css});
+                });
+            });
+        }
+    </script>
+
+    <script>
+        // Call this function to start plugin.
+        // For security reasons it is STRONGLY recommended NOT to store your PLUGIN_ID and SECRET_KEY on client side.
+        // Please use backend middleware to authenticate plugin.
+        // See documentation: https://stripo.email/plugin-api/
+        function initPlugin(template) {
+            const apiRequestData = {
+                emailId: 123
+            };
+            const script = document.createElement('script');
+            script.id = 'stripoScript';
+            script.type = 'text/javascript';
+            // script.src = 'https://plugins.stripo.email/static/latest/stripo.js';
+            script.src = 'http://localhost:3000/stripo.js';
+            script.onload = function () {
+                window.Stripo.init({
+                    settingsId: 'stripoSettingsContainer',
+                    previewId: 'stripoPreviewContainer',
+                    codeEditorButtonId: 'codeEditor',
+                    undoButtonId: 'undoButton',
+                    redoButtonId: 'redoButton',
+                    locale: 'en',
+                    html: template.html,
+                    css: template.css,
+                    apiRequestData: apiRequestData,
+                    userFullName: 'Plugin Demo User',
+                    versionHistory: {
+                        changeHistoryLinkId: 'changeHistoryLink',
+                        onInitialized: function(lastChangeIndoText) {
+                            $('#changeHistoryContainer').show();
+                        }
+                    },
+                    getAuthToken: function (callback) {
+                        request('POST', 'https://plugins.stripo.email/api/v1/auth',
+                            JSON.stringify({
+                                pluginId: 'YOUR_PLUGIN_ID',
+                                secretKey: 'YOUR_SECRET_KEY'
+                            }),
+                            function(data) {
+                                callback(JSON.parse(data).token);
+                            });
+                    }
+                }, function() {
+                    //This function is called when the window.StripoApi object is created but before Stripo editor initialization
+
+                    const STRIPO_IMAGE_LOGO_CONTROL_NAME = "stripoImageLogoControl";
+
+                    //Custom control definition. name and render() function must be defined
+                    //   this.jContainer - jQuery container for control rendering
+                    //   this.jElement - jQuery element of selected block
+                    const stripoImageLogoControl = {
+                        name: STRIPO_IMAGE_LOGO_CONTROL_NAME,
+                        render() {
+                            this.jContainer.html(`<div class="form-group">
+                                    <label for="playButton" class="col-xs-7 control-label">Logo</label>
+                                    <div class="col-xs-5 text-right">
+                                        <button id="stripoLogoButton" type="button" class="btn btn-default pull-right ">Set Stripo logo</button>
+                                    </div>
+                                </div>`);
+                            const that = this;
+                            document.getElementById('stripoLogoButton').addEventListener('click', function() {
+                                that.jElement.find('img').attr('src', 'https://str.stripocdn.email/content/guids/CABINET_9df86e5b6c53dd0319931e2447ed854b/images/64951510234941531.png');
+                            });
+                        }
+                    }
+
+                    window.StripoApi.initExternalSettingControls = function(controlsList) {
+                        //Custom control must be added to the list of all Stripo controls
+                        controlsList.push(stripoImageLogoControl)
+                    };
+                    window.StripoApi.initExternalSettingsPanels = function(panelsList) {
+                        //Custom control name must be added to the list of controls of appropriate settings panel
+                        //The full list of all available settings panels can be displayed with this peace of code:
+                        //   for (const panel of panelsList) {
+                        //       console.log(panel.name);
+                        //   }
+
+                        panelsList.find(p => p.name == 'imgBlockSettingsPanel').controls.push(STRIPO_IMAGE_LOGO_CONTROL_NAME);
+                    };
+                });
+            };
+            document.body.appendChild(script);
+        }
+
+        loadDemoTemplate(initPlugin);
+    </script>
+</body>
+</html>
