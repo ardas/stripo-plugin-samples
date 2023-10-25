@@ -114,7 +114,7 @@ export function createProductBlockExtension(stripoConfig, stripoApi, extensionBa
     function getSelectedProductValues(selectedProduct) {
         if(selectedProduct){
             return [
-                {key: '#PRODUCT_IMAGE_SRC#', value: selectedProduct.image_url },
+                {key: '#PRODUCT_IMAGE_SRC#', value: selectedProduct.image_url || `${extensionBasePath}/assets/images/image-placeholder.png` },
                 {key: '#PRODUCT_VENDOR_CODE#', value: stripoApi.translate('preview.layout.demo.vendorCode', [selectedProduct.vendorCode || 5803701783])},
                 {key: '#PRODUCT_TITLE#', value: selectedProduct.name},
                 {key: '#PRODUCT_PRICE#', value: selectedProduct.price || '1 234 $'},
