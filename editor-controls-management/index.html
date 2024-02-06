@@ -116,7 +116,8 @@
                             </div>`);
 
                             this.jContainer.on('click', `#textCustomExampleControlButton`, ()=> {
-                                this.jElement.html(this.jElement.html() + '<p>Text example paragraph</p>');
+                                this.jElement.find('p').append('<b>Text example paragraph</b>');
+                                this.applyChangesImmediately();
                             });
                         }
                     });
