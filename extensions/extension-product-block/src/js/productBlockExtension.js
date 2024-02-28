@@ -61,7 +61,6 @@ export function createProductBlockExtension(stripoConfig, stripoApi, extensionBa
         const productBlocks = emailBody.find(`.${BLOCK_UNIQUE_CLASS_NAME}[${ATTR_NAME_RECOMMENDATION_GROUPS}]`);
         if (productBlocks.length) {
             const stripoConfigGroups = stripoConfig.productDemoBlock.groups;
-            let groupsUsed = [];
             productBlocks.each(function() {
                 const block = stripoApi.jQuery(this);
                 block.html(getLayoutWithDemoValues(block.html()));
@@ -71,7 +70,7 @@ export function createProductBlockExtension(stripoConfig, stripoApi, extensionBa
                 const groupsToRemove = [];
                 blockConfig.groups.forEach(blockGroup => {
                     const groupFromAppConfig = stripoConfigGroups.find(g => g.id == blockGroup.id);
-                    if (!groupFromAppConfig || groupsUsed.includes(blockGroup.id)) {
+                    if (!groupFromAppConfig) {
                         groupsToRemove.push(blockGroup.id);
                         shouldUpdateLayout = true;
                     } else {
@@ -95,7 +94,6 @@ export function createProductBlockExtension(stripoConfig, stripoApi, extensionBa
                 if (shouldUpdateLayout) {
                     updateLayout(block, blockConfig);
                 }
-                groupsUsed = groupsUsed.concat(blockConfig.groups.map(g => g.id));
             });
         }
     }
