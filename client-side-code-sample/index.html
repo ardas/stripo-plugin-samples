@@ -1,141 +1,278 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8">
     <title>Stripo Plugin Example</title>
     <style>
-        #externalSystemContainer {
-            background-color: darkgrey;
-            padding: 5px 0 5px 20px;
-        }
-        #undoButton, #redoButton {
-            display: none;
-        }
-        #stripoSettingsContainer {
-            width: 400px;
-            float: left;
-        }
-        #stripoPreviewContainer {
-            width: calc(100% - 400px);
-            float: left;
-        }
-        .notification-zone {
-            position: fixed;
-            width: 400px;
-            z-index: 99999;
-            right: 20px;
-            bottom: 80px;
-        }
-        .control-button {
-            border-radius: 17px;
-            padding: 5px 10px;
-            border-color: grey;
-        }
-        #changeHistoryLink {
-            cursor: pointer;
-        }
+      #externalSystemContainer {
+        background-color: darkgrey;
+        padding: 5px 20px;
+        display: flex;
+        justify-content: space-between;
+      }
+      #undoButton,
+      #redoButton {
+        display: none;
+      }
+      #stripoSettingsContainer {
+        width: 400px;
+        float: left;
+      }
+      #stripoPreviewContainer {
+        width: calc(100% - 400px);
+        float: left;
+      }
+      .notification-zone {
+        position: fixed;
+        width: 400px;
+        z-index: 99999;
+        right: 30px;
+        bottom: 80px;
+      }
+      .control-button {
+        border-radius: 17px;
+        padding: 5px 10px;
+        border-color: grey;
+        cursor: pointer;
+      }
+      #changeHistoryLink {
+        cursor: pointer;
+      }
+      #exportButton,
+      #saveButton {
+        background: #b5e8b5;
+      }
+      /* Notifications styles */
+      .alert-success {
+        color: #046904;
+        background: #b5e8b5;
+        padding: 5px 10px;
+        border: 2px solid #046904;
+        border-radius: 15px;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div id="externalSystemContainer">
-        <!--This is external system container where you can place plugin buttons -->
+      <!--This is external system container where you can place plugin buttons -->
+      <div>
         <button id="undoButton" class="control-button">Undo</button>
         <button id="redoButton" class="control-button">Redo</button>
         <button id="codeEditor" class="control-button">Code editor</button>
         <span id="changeHistoryContainer" style="display: none;">Last change: <a id="changeHistoryLink"></a></span>
+      </div>
+      <div>
+        <button id="saveButton" class="control-button">Save</button>
+        <button id="exportButton" class="control-button">Export</button>
+      </div>
     </div>
     <div class="notification-zone"></div>
     <div>
-        <!--Plugin containers -->
-        <div id="stripoSettingsContainer">Loading...</div>
-        <div id="stripoPreviewContainer"></div>
+      <!--Plugin containers -->
+      <div id="stripoSettingsContainer">Loading...</div>
+      <div id="stripoPreviewContainer"></div>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js" integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30=" crossorigin="anonymous"></script>
-    <script type="application/javascript" src="notifications.js"></script>
     <script>
-        // Utility methods
-        function request(method, url, data, callback) {
-            var req = new XMLHttpRequest();
-            req.onreadystatechange = function () {
-                if (req.readyState === 4 && req.status === 200) {
-                    callback(req.responseText);
-                } else if (req.readyState === 4 && req.status !== 200) {
-                    console.error('Can not complete request. Please check you entered a valid PLUGIN_ID and SECRET_KEY values');
+      // Utility methods
+      function request(method, url, data, callback) {
+        var req = new XMLHttpRequest();
+        req.onreadystatechange = function () {
+          if (req.readyState === 4 && req.status === 200) {
+            callback(req.responseText);
+          } else if (req.readyState === 4 && req.status !== 200) {
+            console.error('Can not complete request. Please check you entered a valid PLUGIN_ID and SECRET_KEY values');
+          }
+        };
+        req.open(method, url, true);
+        if (method !== 'GET') {
+          req.setRequestHeader('content-type', 'application/json');
+        }
+        req.send(data);
+      }
+
+      function loadDemoTemplate(callback) {
+        request('GET', 'https://raw.githubusercontent.com/ardas/stripo-plugin/master/Public-Templates/Basic-Templates/Trigger%20newsletter%20mockup/Trigger%20newsletter%20mockup.html', null, function(html) {
+          request('GET', 'https://raw.githubusercontent.com/ardas/stripo-plugin/master/Public-Templates/Basic-Templates/Trigger%20newsletter%20mockup/Trigger%20newsletter%20mockup.css', null, function(css) {
+            callback({html: html, css: css});
+          });
+        });
+      }
+    </script>
+
+    <script>
+      // Call this function to start plugin.
+      // For security reasons it is STRONGLY recommended NOT to store your PLUGIN_ID and SECRET_KEY on client side.
+      // Please use backend middleware to authenticate plugin.
+      // See documentation: https://stripo.email/plugin-api/
+      function initPlugin(template) {
+        const apiRequestData = {
+          emailId: 123
+        };
+        const script = document.createElement('script');
+        script.id = 'stripoScript';
+        script.type = 'text/javascript';
+        script.src = 'https://plugins.stripo.email/static/latest/stripo.js';
+        script.onload = function () {
+          window.Stripo.init({
+            settingsId: 'stripoSettingsContainer',
+            previewId: 'stripoPreviewContainer',
+            codeEditorButtonId: 'codeEditor',
+            undoButtonId: 'undoButton',
+            redoButtonId: 'redoButton',
+            locale: 'en',
+            html: template.html,
+            css: template.css,
+            notifications: {
+              info: notifications.info.bind(notifications),
+              error: notifications.error.bind(notifications),
+              warn: notifications.warn.bind(notifications),
+              loader: notifications.loader.bind(notifications),
+              hide: notifications.hide.bind(notifications),
+              success: notifications.success.bind(notifications)
+            },
+            apiRequestData: apiRequestData,
+            userFullName: 'Plugin Demo User',
+            versionHistory: {
+              changeHistoryLinkId: 'changeHistoryLink',
+              onInitialized: function(lastChangeIndoText) {
+                $('#changeHistoryContainer').show();
+              }
+            },
+            getAuthToken: function (callback) {
+              request('POST', 'https://plugins.stripo.email/api/v1/auth',
+                JSON.stringify({
+                  pluginId: 'YOUR_PLUGIN_ID',
+                  secretKey: 'YOUR_SECRET_KEY'
+                }),
+                function(data) {
+                  callback(JSON.parse(data).token);
                 }
-            };
-            req.open(method, url, true);
-            if (method !== 'GET') {
-                req.setRequestHeader('content-type', 'application/json');
+              );
             }
-            req.send(data);
-        }
+          });
+        };
+        document.body.appendChild(script);
+      }
 
-        function loadDemoTemplate(callback) {
-            request('GET', 'https://raw.githubusercontent.com/ardas/stripo-plugin/master/Public-Templates/Basic-Templates/Trigger%20newsletter%20mockup/Trigger%20newsletter%20mockup.html', null, function(html) {
-                request('GET', 'https://raw.githubusercontent.com/ardas/stripo-plugin/master/Public-Templates/Basic-Templates/Trigger%20newsletter%20mockup/Trigger%20newsletter%20mockup.css', null, function(css) {
-                    callback({html: html, css: css});
-                });
-            });
-        }
+      loadDemoTemplate(initPlugin);
     </script>
 
     <script>
-        // Call this function to start plugin.
-        // For security reasons it is STRONGLY recommended NOT to store your PLUGIN_ID and SECRET_KEY on client side.
-        // Please use backend middleware to authenticate plugin.
-        // See documentation: https://stripo.email/plugin-api/
-        function initPlugin(template) {
-            const apiRequestData = {
-                emailId: 123
-            };
-            const script = document.createElement('script');
-            script.id = 'stripoScript';
-            script.type = 'text/javascript';
-            script.src = 'https://plugins.stripo.email/static/latest/stripo.js';
-            script.onload = function () {
-                window.Stripo.init({
-                    settingsId: 'stripoSettingsContainer',
-                    previewId: 'stripoPreviewContainer',
-                    codeEditorButtonId: 'codeEditor',
-                    undoButtonId: 'undoButton',
-                    redoButtonId: 'redoButton',
-                    locale: 'en',
-                    html: template.html,
-                    css: template.css,
-                    notifications: {
-                        info: notifications.info.bind(notifications),
-                        error: notifications.error.bind(notifications),
-                        warn: notifications.warn.bind(notifications),
-                        loader: notifications.loader.bind(notifications),
-                        hide: notifications.hide.bind(notifications),
-                        success: notifications.success.bind(notifications)
-                    },
-                    apiRequestData: apiRequestData,
-                    userFullName: 'Plugin Demo User',
-                    versionHistory: {
-                        changeHistoryLinkId: 'changeHistoryLink',
-                        onInitialized: function(lastChangeIndoText) {
-                            $('#changeHistoryContainer').show();
-                        }
-                    },
-                    getAuthToken: function (callback) {
-                        request('POST', 'https://plugins.stripo.email/api/v1/auth',
-                            JSON.stringify({
-                                pluginId: 'YOUR_PLUGIN_ID',
-                                secretKey: 'YOUR_SECRET_KEY'
-                            }),
-                            function(data) {
-                                callback(JSON.parse(data).token);
-                            });
-                    }
-                });
-            };
-            document.body.appendChild(script);
+      var notifications = {
+        autoCloseTimeout: 10000,
+        container: '.notification-zone',
+        error: function (text, id, params) {
+          this.showNotification(this.getErrorNotification.bind(this), text, id, params);
+        },
+        warn: function (text, id, params) {
+          this.showNotification(this.getWarningNotification.bind(this), text, id, params);
+        },
+        info: function (text, id, params) {
+          this.showNotification(this.getInfoNotification.bind(this), text, id, params);
+        },
+        success: function (text, id, params) {
+          this.showNotification(this.getSuccessNotification.bind(this), text, id, params);
+        },
+        loader: function (text, id, params) {
+          this.showNotification(this.getLoaderNotification.bind(this), text, id, params);
+        },
+        hide: function (id) {
+          var toast = $('#' + id, this.container);
+          toast.effect('fade', 600, function () {
+            toast.remove()
+          })
+        },
+        showNotification: function (notificationGetter, text, id, params) {
+          params = Object.assign({autoClose: true, closeable: true}, params || {});
+          if (!id || !$('#' + id).length) {
+            var toast = notificationGetter(text, id, !params.closeable);
+            $(this.container).append(toast);
+            toast.effect('slide', {direction: 'down'}, 300);
+            if (params.autoClose) {
+              setTimeout(function () {
+                toast.effect('fade', 600, function () {
+                  toast.remove()
+                })
+              }, this.autoCloseTimeout);
+            }
+          }
+        },
+        getErrorNotification: function (text, id, nonclosable) {
+          return this.getNotificationTemplate('alert-danger', text, id, nonclosable);
+        },
+        getWarningNotification: function (text, id, nonclosable) {
+          return this.getNotificationTemplate('alert-warning', text, id, nonclosable);
+        },
+        getInfoNotification: function (text, id, nonclosable) {
+          return this.getNotificationTemplate('alert-info', text, id, nonclosable);
+        },
+        getSuccessNotification: function (text, id, nonclosable) {
+          return this.getNotificationTemplate('alert-success', text, id, nonclosable);
+        },
+        getLoaderNotification: function (text, id) {
+          var notification = $('\
+            <div class="alert alert-info" role="alert">\
+            <div style="width:auto; margin-right: 15px; float: left !important;">\
+                <div style="width:20px;height:20px;border-radius:50%;box-shadow:1px 1px 0px #31708f;\
+                  animation:cssload-spin 690ms infinite linear"></div>\
+              </div>' + text + '\
+            </div>');
+          id && notification.attr('id', id);
+          return notification;
+        },
+        getNotificationTemplate: function (classes, text, id, nonclosable) {
+          var notification = $('\
+            <div class="alert alert-dismissible ' + classes + (nonclosable ? ' nonclosable' : '') + '" role="alert">\
+              ' + (nonclosable ? '' :
+                '<button type="button" class="close" data-dismiss="alert" aria-label="Close">\
+                  <span aria-hidden="true">&times;</span>\
+                </button>') +
+                text +
+            '</div>');
+          id && notification.attr('id', id);
+          return notification;
         }
-
-        loadDemoTemplate(initPlugin);
+      };
     </script>
-</body>
+  
+    <script>
+      //the getTemplate() function example
+      document
+      .querySelector('#saveButton')
+      .addEventListener('click', function () {
+        const message = 'The operation is successful. You can find the code in the console of your browser. This is an example of the getTemplate() function in action.';
+          
+        window.StripoApi.getTemplate(function (html, css) {
+
+          //your save logic should be here
+
+          console.log('%cThis method returns the HTML and CSS codes with the Plugin internal extra styles and editor markup.', 'background-color: #d8f0d8');
+          console.log('The HTML:');
+          console.log(html);
+          console.log('The CSS:');
+          console.log(css);
+        });
+        notifications.success(message);
+      });
+
+      //the compileEmail() function example
+      document
+      .querySelector('#exportButton')
+      .addEventListener('click', function () {
+        const message = 'The operation is successful. You can find the code in the console of your browser. This is an example of the compileEmail() function in action.';
+
+        window.StripoApi.compileEmail(function (error, html, ampHtml, ampErrors) {
+
+          //your save logic should be here
+
+          console.log('%cThis method returns compiled and compressed HTML code that is ready to be sent out to clients.', 'background-color: #d8f0d8');
+          console.log(html);
+        });
+        notifications.success(message);
+      });
+    </script>
+  </body>
 </html>
