@@ -21,7 +21,9 @@ window.ExternalDisplayConditionsPopup = (function() {
     const DROPDOWN_CONDITION_CONCATENATION_CLASS = 'dropdownConcatenation';
 
     let conditionsPopupElement;
+    let confirmationPopupElement;
     let selectConditionsCallback;
+    let deleteConfirmationCallback;
 
     const createPopupTextFromCondition = function(beforeScript) {
         let separator = beforeScript.indexOf('&&') > -1 ? '&&' : '||';
@@ -46,6 +48,11 @@ window.ExternalDisplayConditionsPopup = (function() {
     const closePopup = function() {
         conditionsPopupElement.style.visibility = 'hidden';
     };
+
+    const closeConfirmationPopup = function() {
+        confirmationPopupElement.style.visibility = 'hidden';
+    };
+
 
     const createConditionsPopup = function() {
         const div = document.createElement('div');
@@ -103,7 +110,41 @@ window.ExternalDisplayConditionsPopup = (function() {
         getDropdownProps(conditionsPopupElement, DROPDOWN_CONDITION_CONCATENATION_CLASS).values = AVAILABLE_CONDITION_CONCATENATIONS;
     };
 
-    const getDropdownMarkup = function(clazz) {
+    const createConfirmationPopup = function() {
+        const div = document.createElement('div');
+        div.innerHTML = '\
+            <div id="externalDisplayConditionsDeleteConfirmation" style="background-color: rgba(0,0,0,.5); overflow: hidden; \
+                    position: fixed; top: 0; right: 0;  bottom: 0; left: 0; z-index: 1050; font-family: sans-serif; visibility: hidden;" \
+                    class="esdev-app">\
+                <div style="margin: 10px;">\
+                <div style="background-color: #f6f6f6; border-radius: 17px 17px 30px 30px; max-width: 400px; margin: 0 auto;">\
+                    <div style="padding: 15px; border-bottom: 1px solid #e5e5e5;">\
+                        <div>\
+                           <button id="closeConfirmationPopupButton" type="button" style="cursor: pointer; background: transparent; border: 0; float: right; font-size: 21px; font-weight: bold; opacity: .2;">\
+                                <span>×</span>\
+                            </button>\
+                            <h4 style="margin: 0; font-size: 18px; color: rgb(85, 85, 85);">Delete custom logic?</h4>\
+                        </div>\
+                    </div>\
+                    <div style="padding: 15px;">\
+                        <p style="margin: 0; color: rgb(85, 85, 85);">Deleting this login will remove it from the block</p>\
+                        <p style="margin: 0; color: rgb(85, 85, 85);">You cannot undo this action</p>\
+                    </div>\
+                    <div style="padding: 15px; display: flex; justify-content: flex-end; gap: 10px;">\
+                        <button id="closeConfirmationsPopup" class="btn btn-secondary">Cancel</button>\
+                        <button id="applyDelete" class="btn btn-danger">Delete logic</button>\
+                     </div>\
+                </div>\
+            </div>';
+        document.body.appendChild(div);
+        confirmationPopupElement = document.getElementById('externalDisplayConditionsDeleteConfirmation');
+
+        confirmationPopupElement.querySelector('#closeConfirmationPopupButton').addEventListener('click', closeConfirmationPopup);
+        confirmationPopupElement.querySelector('#closeConfirmationsPopup').addEventListener('click', closeConfirmationPopup);
+        confirmationPopupElement.querySelector('#applyDelete').addEventListener('click', applyDeleteConditions);
+    };
+
+    const getDropdownMarkup = function (clazz) {
         return '<dropdown-input classes="dropdown-condition ' + clazz + '"\
                 buttonWrapperClasses="form-control"\
                 optionTextClass="text"></dropdown-input>';
@@ -116,6 +157,14 @@ window.ExternalDisplayConditionsPopup = (function() {
         initConditions(appliedCondition);
         conditionsPopupElement.style.visibility = 'visible';
     };
+
+    const activateDeleteConfirmationPopup = function(appliedCondition) {
+        if (!confirmationPopupElement) {
+            createConfirmationPopup();
+        }
+        confirmationPopupElement.style.visibility = 'visible';
+    };
+
 
     const initConditions = function(appliedCondition) {
         conditionsPopupElement.querySelector('.conditionsTable').innerHTML = '';
@@ -163,6 +212,11 @@ window.ExternalDisplayConditionsPopup = (function() {
     const updateDeleteActionVisibility = function() {
         const rows = conditionsPopupElement.querySelectorAll('.conditionsTable .condition-row');
         rows[0].querySelector('.es-icon-delete').style.display = rows.length > 1 ? 'block' : 'none';
+    };
+
+    const applyDeleteConditions = function() {
+        deleteConfirmationCallback();
+        closeConfirmationPopup();
     };
 
     const applyConditions = function() {
@@ -246,6 +300,11 @@ window.ExternalDisplayConditionsPopup = (function() {
         openExternalDisplayConditionsDialog: function(onSelectCallback, appliedCondition) {
             selectConditionsCallback = onSelectCallback;
             activateConditionsPopup(appliedCondition);
+        },
+
+        showConditionsDeleteConfirmation: function(deleteCallback) {
+            deleteConfirmationCallback = deleteCallback;
+            activateDeleteConfirmationPopup();
         },
 
         getConditionsTooltip: function(condition) {
