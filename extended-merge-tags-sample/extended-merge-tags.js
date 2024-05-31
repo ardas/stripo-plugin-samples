@@ -1,6 +1,7 @@
 window.ExternalMergeTags = (function() {
     var externalMergeTags;
     var selectCallback;
+    var selectedMergeTag
 
     var close = function() {
         externalMergeTags.style.visibility = 'hidden';
@@ -27,7 +28,7 @@ window.ExternalMergeTags = (function() {
                         <div class="thumbnail" tag-value="{{Name}}" style="display: inline-block; width: 154px; height: 120px; cursor: pointer; padding: 4px; background-color: #ffffff; border: 1px solid #b80000; border-radius: 10px; margin-right: 10px">\
                             Merge Tag Name\
                         </div>\
-                        <div class="thumbnail" tag-value="%%Phone%%" style="display: inline-block; width: 154px; height: 120px; cursor: pointer; padding: 4px; background-color: #ffffff; border: 1px solid #b80000; border-radius: 10px; margin-right: 10px">\
+                        <div class="thumbnail" tag-value="%%Phone%%" tag-label="User phone number" style="display: inline-block; width: 154px; height: 120px; cursor: pointer; padding: 4px; background-color: #ffffff; border: 1px solid #b80000; border-radius: 10px; margin-right: 10px">\
                             Merge Tag Phone\
                         </div>\
                         <div class="thumbnail" tag-value="Merge Tag 3" style="display: inline-block; width: 154px; height: 120px; cursor: pointer; padding: 4px; background-color: #ffffff; border: 1px solid #b80000; border-radius: 10px; margin-right: 10px">\
@@ -38,6 +39,11 @@ window.ExternalMergeTags = (function() {
             </div>';
         document.body.appendChild(div);
 
+        //add style to the document for selected element
+        const style = document.createElement('style');
+        style.innerHTML = '#externalMergeTags .thumbnail.selected {color: blue; box-shadow: 0 0 0 2px blue; }';
+        document.head.appendChild(style);
+
         externalMergeTags = document.getElementById('externalMergeTags');
         externalMergeTags.querySelector('.close').addEventListener('click', cancelAndClose);
         externalMergeTags.addEventListener('click', function(e) {
@@ -46,7 +52,10 @@ window.ExternalMergeTags = (function() {
                 return;
             }
             const exampleOfMergeTagValue = e.target.getAttribute('tag-value');
-            selectCallback(exampleOfMergeTagValue);
+            const exampleOfMergeTagLabel = e.target.getAttribute('tag-label');
+            selectCallback(exampleOfMergeTagLabel
+                ? {value: exampleOfMergeTagValue, label: exampleOfMergeTagLabel}
+                : exampleOfMergeTagValue);
             close();
         });
     };
@@ -55,14 +64,22 @@ window.ExternalMergeTags = (function() {
         if (!externalMergeTags) {
             initMergeTags();
         }
+        const selectedElement = externalMergeTags.querySelector('.selected');
+        selectedElement && selectedElement.classList.remove('selected');
+        if (selectedMergeTag) {
+            externalMergeTags.querySelector(`[tag-value="${selectedMergeTag}"]`).classList.add('selected');
+        }
         externalMergeTags.style.visibility = 'visible';
+
     };
 
 
     return {
-        open: function(mergeTagSelectCallback) {
+        open: function(mergeTagSelectCallback, mergeTag) {
             selectCallback = mergeTagSelectCallback;
+            selectedMergeTag = mergeTag;
             renderMergeTags();
-        }
+        },
+        openOnClickByMergeTag: true,
     };
 })();
