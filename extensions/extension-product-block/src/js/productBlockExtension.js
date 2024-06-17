@@ -260,6 +260,7 @@ export function createProductBlockExtension(stripoConfig, stripoApi, extensionBa
         iconClass: 'es-icon-product',
         uniqueClassName: BLOCK_UNIQUE_CLASS_NAME,
         canBeSavedToLibrary: true,
+        canBeConditionalBlock: true,
         settingsCssPath: '/assets/css/settings.css',
         previewCssPath: '/assets/css/preview.css',
         i18n: translations,
