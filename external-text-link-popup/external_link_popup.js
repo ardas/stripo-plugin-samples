@@ -71,5 +71,6 @@ window.ExternalLinkPopup = (function() {
             externalLink.querySelector('#text').value = params.text;
         },
         showOpenCustomLinkIcon: true,
+        openOnClickByInput: true,
     };
 })();
