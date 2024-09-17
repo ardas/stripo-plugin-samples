@@ -100,15 +100,13 @@
         const script = document.createElement('script');
         script.id = 'stripoScript';
         script.type = 'text/javascript';
-        //script.src = 'https://dev-account.stripo.email/static/stripo.js';
-        script.src = 'http://localhost:3000/stripo.js';
+        script.src = 'https://plugins.stripo.email/static/stripo.js';
 
         script.onload = function () {
             window.Stripo.init({
                 settingsId: 'stripoSettingsContainer',
                 previewId: 'stripoPreviewContainer',
                 codeEditorButtonId: 'codeEditor',
-              apiBaseUrl: 'https://dev-plugins.stripo.email/api/v1',
                 locale: 'en',
                 html: template.html,
                 css: template.css,
@@ -140,8 +138,8 @@
              en: 'When this setting is off, menus will look the same on desktop and mobile. We suggest turning the toggle on if your menu is long.',
            }
          },
-            getAuthToken: function (callback) {
-                    request('POST', 'https://dev-plugins.stripo.email/api/v1/auth',
+              getAuthToken: function (callback) {
+                    request('POST', 'https://plugins.stripo.email/api/v1/auth',
                       JSON.stringify({
                         pluginId: 'YOUR_PLUGIN_ID',
                         secretKey: 'YOUR_SECRET_KEY'
@@ -150,16 +148,6 @@
                         callback(JSON.parse(data).token);
                       });
                 },
-              // getAuthToken: function (callback) {
-                //     request('POST', 'https://plugins.stripo.email/api/v1/auth\',',
-                //       JSON.stringify({
-                //         pluginId: 'YOUR_PLUGIN_ID',
-                //         secretKey: 'YOUR_SECRET_KEY'
-                //       }),
-                //       function(data) {
-                //         callback(JSON.parse(data).token);
-                //       });
-                // },
             });
         };
         document.body.appendChild(script);
