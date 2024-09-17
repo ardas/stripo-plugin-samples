@@ -1,14 +1,4 @@
 window.ExternalDisplayConditionsPopup = (function() {
-    const styles = `
-        .es-icon-edit {
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M3 17.25v3.75h3.75l11.43-11.43-3.75-3.75L3 17.25zm17.71-8.47a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path></svg>');
-            width: 16px;                        
-        }
-        .es-icon-delete {
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>');
-            width: 16px;                        
-        }
-    `;
     const AVAILABLE_CONDITION_NAMES = [
         {label: 'Email Address', value: '$EMAIL'},
         {label: 'Phone number', value: '$PHONE'},
@@ -316,12 +306,6 @@ window.ExternalDisplayConditionsPopup = (function() {
             tooltip.id = 'conditionTooltip';
             document.body.appendChild(tooltip);
         }
-        // if (!document.querySelector('#conditionStyles')) {
-        //     const style = document.createElement('style');
-        //     style.id = 'conditionStyles';
-        //     style.innerHTML = styles;
-        //     document.head.appendChild(style);
-        // }
     };
 
     const getConditionsTooltip = function (condition) {
