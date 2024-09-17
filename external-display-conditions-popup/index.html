@@ -89,9 +89,12 @@
                 apiRequestData: apiRequestData,
                 conditionsEnabled: true,
                 customConditionsEnabled: false,
-                showConditionsTooltipOnClick: true,
+                // to show conditions tooltip on click as callback, set showConditionsTooltipOnClick to callback function
+                showConditionsTooltipOnClick: window.ExternalDisplayConditionsPopup.showConditionsTooltipOnClick,
+                // to show conditions tooltip on click, set showConditionsTooltipOnClick to true and provide conditionsTooltip
+                /* showConditionsTooltipOnClick: true,
+                conditionsTooltip: window.ExternalDisplayConditionsPopup.getConditionsTooltip,*/
                 showConditionsDeleteConfirmation: window.ExternalDisplayConditionsPopup.showConditionsDeleteConfirmation,
-                conditionsTooltip: window.ExternalDisplayConditionsPopup.getConditionsTooltip,
                 conditionCategories: [
                     {
                         type: 'EXTERNAL',
