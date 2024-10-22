@@ -24,6 +24,7 @@ window.ExternalDisplayConditionsPopup = (function() {
     let confirmationPopupElement;
     let selectConditionsCallback;
     let deleteConfirmationCallback;
+    let hideTooltipTimeout;
 
     const createPopupTextFromCondition = function(beforeScript) {
         let separator = beforeScript.indexOf('&&') > -1 ? '&&' : '||';
@@ -294,6 +295,57 @@ window.ExternalDisplayConditionsPopup = (function() {
             option = options[0];
         }
         return option.value;
+    };
+
+    let tooltip;
+
+    const createTooltip = function() {
+        if (!document.querySelector('#conditionTooltip')) {
+            tooltip = document.createElement('div');
+            tooltip.className = 'esdev-app';
+            tooltip.id = 'conditionTooltip';
+            document.body.appendChild(tooltip);
+        }
+    };
+
+    const getConditionsTooltip = function (condition) {
+            return `
+                    <div style="padding: 30px; width: 500px;
+                                z-index: 9999999;top: -12px; left:0; right:0; margin-left: auto;margin-right: auto;">
+                        <div style="width: 500px; color: rgb(85, 85, 85); border-bottom: 1px solid #e5e5e5; padding: 10px; 
+                                background: #f6f6f6; border-radius: 17px; border: 1px solid rgba(0, 0, 0, 0.1); 
+                                box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);background-clip: padding-box;">
+                            <table style="width: 100%; color: rgb(85, 85, 85); border-bottom: 1px solid #e5e5e5; padding-bottom: 5px">
+                                <tr>
+                                    <td>
+                                        <span style="font-size: 16px; font-weight: bold">Conditional Content Block</span>
+                                    </td>
+                                    <td style="width: 30px; padding-bottom: 10px;">
+                                        <span class="es-icon-edit"></span>                                
+                                    </td>
+                                    <td style="width: 20px; padding-bottom: 10px;">
+                                        <span class="es-icon-delete"></span>                                
+                                    </td>
+                                </tr>
+                            </table>    
+                            <div style="text-align: left; padding-top: 5px; font-size: 14px;">
+                                ${createPopupTextFromCondition(condition.beforeScript)}
+                            </div>
+                        </div>
+                    </div>`;
+        };
+
+    const close = function() {
+        tooltip.removeEventListener('onmouseover', onMouseOver);
+        tooltip.removeEventListener('onmouseleave', onMouseLeave);
+        tooltip.style.display = 'none';
+    }
+
+    const onMouseOver = function() {
+        hideTooltipTimeout && clearTimeout(hideTooltipTimeout);
+    }
+    const onMouseLeave = function() {
+        hideTooltipTimeout = setTimeout(() => close(), 500);
     }
 
     return {
@@ -307,29 +359,27 @@ window.ExternalDisplayConditionsPopup = (function() {
             activateDeleteConfirmationPopup();
         },
 
-        getConditionsTooltip: function(condition) {
-            return `
-                <div style="width: 500px; color: rgb(85, 85, 85); border-bottom: 1px solid #e5e5e5; padding: 10px; 
-                        position: absolute; background: #f6f6f6; border-radius: 17px; border: 1px solid rgba(0, 0, 0, 0.1); 
-                        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);background-clip: padding-box;transition: all .2s ease-in-out;
-                        z-index: 9999999;top: 18px; left:0; right:0; margin-left: auto;margin-right: auto;">
-                    <table style="width: 100%; color: rgb(85, 85, 85); border-bottom: 1px solid #e5e5e5; padding-bottom: 5px">
-                        <tr>
-                            <td>
-                                <span style="font-size: 16px; font-weight: bold">Conditional Content Block</span>
-                            </td>
-                            <td style="width: 30px; padding-bottom: 10px;">
-                                <span class="es-icon-edit"></span>                                
-                            </td>
-                            <td style="width: 20px; padding-bottom: 10px;">
-                                <span class="es-icon-delete"></span>                                
-                            </td>
-                        </tr>
-                    </table>    
-                    <div style="text-align: left; padding-top: 5px; font-size: 14px;">
-                        ${createPopupTextFromCondition(condition.beforeScript)}
-                    </div>
-                </div>`;
-        }
+        showConditionsTooltipOnClick: function({condition, element, deleteCallback, updateCallback}) {
+            const rect = element.getBoundingClientRect();
+            createTooltip();
+            tooltip.style.position = 'absolute';
+            tooltip.style.top = `${rect.top}px`;
+            tooltip.style.right = '30px';
+            tooltip.style.display = 'block';
+            tooltip.innerHTML = getConditionsTooltip(condition);
+            hideTooltipTimeout = setTimeout(() => close(), 1000);
+            tooltip.getElementsByClassName('es-icon-delete')[0].addEventListener('click', (e) => {
+                close();
+                deleteCallback();
+            });
+            tooltip.getElementsByClassName('es-icon-edit')[0].addEventListener('click', (e) => {
+                close();
+                updateCallback();
+            });
+            tooltip.addEventListener('mouseover', onMouseOver);
+            tooltip.addEventListener('mouseleave', onMouseLeave);
+        },
+
+        getConditionsTooltip,
     };
 })();
