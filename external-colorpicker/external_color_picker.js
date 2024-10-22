@@ -94,8 +94,8 @@ const styles = `
             }
 
             colorOption.addEventListener('click', (e) => {
-                callback(color, e);
-                close();
+                const shouldLeaveColorPickerOpened = false;
+                callback(color, shouldLeaveColorPickerOpened);
             });
             colorPickerContainer.appendChild(colorOption);
         });

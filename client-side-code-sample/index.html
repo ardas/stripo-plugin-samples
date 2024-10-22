@@ -59,7 +59,7 @@
         <button id="undoButton" class="control-button">Undo</button>
         <button id="redoButton" class="control-button">Redo</button>
         <button id="codeEditor" class="control-button">Code editor</button>
-        <span id="changeHistoryContainer" style="display: none;">Last change: <a id="changeHistoryLink"></a></span>
+        <span id="changeHistoryContainer" style="display: none;">Last change: <a href="" id="changeHistoryLink"></a></span>
       </div>
       <div>
         <button id="saveButton" class="control-button">Save</button>
@@ -77,6 +77,40 @@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js" integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30=" crossorigin="anonymous"></script>
     <script>
       // Utility methods
+      function throttle(func, wait) {
+        let isThrottled = false,
+                savedArgs,
+                savedThis;
+
+        function wrapper() {
+          if (isThrottled) {
+            savedArgs = arguments;
+
+            savedThis = this;
+            return;
+          }
+
+          func.apply(this, arguments);
+
+          isThrottled = true;
+
+          setTimeout(function() {
+            isThrottled = false;
+            if (savedArgs) {
+              wrapper.apply(savedThis, savedArgs);
+              savedArgs = savedThis = null;
+            }
+          }, wait);
+        }
+
+        return wrapper;
+      }
+
+      function onWindowResize() {
+        const previewContainer = document.getElementById('stripoPreviewContainer');
+        previewContainer.style.height = window.innerHeight - 55 + 'px';
+      }
+
       function request(method, url, data, callback) {
         var req = new XMLHttpRequest();
         req.onreadystatechange = function () {
@@ -92,11 +126,13 @@
         }
         req.send(data);
       }
+      $(window).on('resize', () => throttle((e) => onWindowResize(), 200));
 
       function loadDemoTemplate(callback) {
         request('GET', 'https://raw.githubusercontent.com/ardas/stripo-plugin/master/Public-Templates/Basic-Templates/Trigger%20newsletter%20mockup/Trigger%20newsletter%20mockup.html', null, function(html) {
           request('GET', 'https://raw.githubusercontent.com/ardas/stripo-plugin/master/Public-Templates/Basic-Templates/Trigger%20newsletter%20mockup/Trigger%20newsletter%20mockup.css', null, function(css) {
             callback({html: html, css: css});
+            onWindowResize();
           });
         });
       }

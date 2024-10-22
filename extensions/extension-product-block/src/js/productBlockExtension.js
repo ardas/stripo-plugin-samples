@@ -254,6 +254,14 @@ export function createProductBlockExtension(stripoConfig, stripoApi, extensionBa
         return groupIds;
     }
 
+    function onModuleChanged(module) {
+    }
+
+    function onSelectBlock(block) {
+    }
+
+    function onDeselectBlock(block) {
+    }
 
     return {
         name: 'DemoProductBlock',
@@ -285,7 +293,7 @@ export function createProductBlockExtension(stripoConfig, stripoApi, extensionBa
             {control: cardTextAlignControl, parentControlName: 'stripoTextAlignControl'},
             {control: cardTextStyleControl, parentControlName: 'stripoTextStyleControl'},
             {control: cardTextLineSpacingControl, parentControlName: 'stripoTextLineSpacingControl'},
-            {control: cardTextPaddingControl, parentControlName: 'stripoPaddingСontrol'},
+            {control: cardTextPaddingControl, parentControlName: 'stripoPaddingControl'},
             {control: cardButtonColorControl, parentControlName: 'stripoButtonColorControl'},
             {control: cardButtonHoverColorControl, parentControlName: 'stripoButtonHoverColorControl'},
             {control: cardButtonStyleControl, parentControlName: 'stripoButtonStyleControl'},
@@ -298,7 +306,7 @@ export function createProductBlockExtension(stripoConfig, stripoApi, extensionBa
             {control: cardButtonAlignControl, parentControlName: 'stripoButtonAlignControl'},
             {control: cardButtonStretchControl, parentControlName: 'stripoButtonStretchControl'},
             {control: cardButtonInternalPaddingControl, parentControlName: 'stripoButtonInternalPaddingControl'},
-            {control: cardButtonExternalPaddingControl, parentControlName: 'stripoPaddingСontrol'}
+            {control: cardButtonExternalPaddingControl, parentControlName: 'stripoPaddingControl'}
         ],
         blockControls: [
             CONTROL_NAME_BLOCK_GROUPS,
@@ -322,6 +330,9 @@ export function createProductBlockExtension(stripoConfig, stripoApi, extensionBa
         updateLayout,
         wrapBlockWithTypeIdentifierAttributesAndGetConfig,
         updateBlockLabel,
-        blockConfigurationService
+        blockConfigurationService,
+        onModuleChanged,
+        onSelectBlock,
+        onDeselectBlock
     }
 }
