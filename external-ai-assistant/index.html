@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Stripo Plugin Example - Color Picker Component</title>
+    <title>Stripo Plugin Example</title>
     <style>
         #externalSystemContainer {
             background-color: darkgrey;
@@ -15,6 +15,11 @@
         #stripoPreviewContainer {
             width: calc(100% - 400px);
             float: left;
+        }
+        .control-button {
+            border-radius: 17px;
+            padding: 5px 10px;
+            border-color: grey;
         }
     </style>
 </head>
@@ -29,7 +34,7 @@
     <div id="stripoPreviewContainer"></div>
 </div>
 
-<script type="application/javascript" src="external_color_picker.js"></script>
+<script type="application/javascript" src="external_ai_assistant.js"></script>
 <script>
     // Utility methods
     function request(method, url, data, callback) {
@@ -64,14 +69,14 @@
     // See documentation: https://stripo.email/plugin-api/
     function initPlugin(template) {
         const apiRequestData = {
-            emailId: "1",
-            userId: "1",
+            emailId: "123",
+            userId:"456",
+            groupId: "test",
         };
         const script = document.createElement('script');
         script.id = 'stripoScript';
         script.type = 'text/javascript';
         script.src = 'https://plugins.stripo.email/static/latest/stripo.js';
-
         script.onload = function () {
             window.Stripo.init({
                 settingsId: 'stripoSettingsContainer',
@@ -80,19 +85,19 @@
                 locale: 'en',
                 html: template.html,
                 css: template.css,
-                ignoreClickOutsideSelectors: '#externalColorPicker',
+                ignoreClickOutsideSelectors: '#externalLink',
+                externalAiAssistant: window.ExternalAiAssistant,
                 apiRequestData: apiRequestData,
-                externalColorPicker: window.ExternalColorPicker,
                 getAuthToken: function (callback) {
-                    request('POST', 'https://plugins.stripo.email/api/v1/auth',
-                      JSON.stringify({
-                        pluginId: 'YOUR_PLUGIN_ID',
-                        secretKey: 'YOUR_SECRET_KEY'
-                      }),
-                      function(data) {
-                        callback(JSON.parse(data).token);
-                      });
-                },
+                request('POST', 'https://plugins.stripo.email/api/v1/auth',
+                  JSON.stringify({
+                    pluginId: 'YOUR_PLUGIN_ID',
+                    secretKey: 'YOUR_SECRET_KEY'
+                  }),
+                  function(data) {
+                    callback(JSON.parse(data).token);
+                  });
+                }
             });
         };
         document.body.appendChild(script);
