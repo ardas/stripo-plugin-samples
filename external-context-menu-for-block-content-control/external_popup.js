@@ -72,7 +72,25 @@ window.ExternalBlockContentControl = (function() {
 
         contextMenuTitle: 'Magic factory',
         contextMenuIcon: 'https://rf.stripocdn.email/content/guids/CABINET_c4aa6e445e77c0a0872dc084ef3a17cd9dc5b402ce2ab34f45da5bae21f078fe/images/magic.png',
+
+        //Starting from 0
         contextMenuPositionIndex: 2,
+
+        // List of blocks:
+        // - 'Block Img'
+        // - 'Block Text'
+        // - 'Block Button'
+        // - 'Block Spacer'
+        // - 'Block Video'
+        // - 'Block Social'
+        // - 'Block Banner'
+        // - 'Block Timer'
+        // - 'Block Menu'
+        // - 'Block HTML'
+        // - 'Block Amp Carousel'
+        // - 'Block Amp Accordion'
+        // - 'Block Amp Form'
+        // - `${extension.name}`
         applyToBlocks: ['Block Text', 'Block Img']
     };
 })();
