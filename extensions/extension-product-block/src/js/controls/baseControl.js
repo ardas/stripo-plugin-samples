@@ -25,6 +25,7 @@ export default {
 
     controlValueUpdated(value) {
         if (this.themeKey) {
+            console.log('controlValueUpdated', this.themeKey, value);
             this.panelState.blockConfig.theme[this.themeKey] = value;
             this.updateBlockConfiguration();
         }
