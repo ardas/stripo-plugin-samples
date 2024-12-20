@@ -1,5 +1,6 @@
-import {CONTROL_NAME_BLOCK_PADDING} from '../const';
+import {CONTROL_NAME_BLOCK_PADDING, EVENT_NAME_LAYOUT_CHANGED} from '../const';
 import baseControl from "./baseControl";
+import {isEqual} from 'lodash';
 
 const DEFAULT_VALUES = {left: 20, top: 20, right: 20, bottom: 0};
 
@@ -7,6 +8,7 @@ export default {
     ...baseControl,
     name: CONTROL_NAME_BLOCK_PADDING,
     themeKey: 'blockPadding',
+    defaultValue: DEFAULT_VALUES,
 
     getLabel() {
         return this.translate('settings.controls.blockPadding.label');
@@ -17,12 +19,7 @@ export default {
     },
 
     getPaddingStyleValue() {
-        return this.panelState.blockConfig.theme && this.panelState.blockConfig.theme.blockPadding
-            ? this.panelState.blockConfig.theme.blockPadding
-            : {
-                desktop: {...DEFAULT_VALUES},
-                mobile: {...DEFAULT_VALUES}
-            };
+        return this.getValueFromElementOrConfigOrDefault();
     },
 
     getDomElementsToApplyValue() {

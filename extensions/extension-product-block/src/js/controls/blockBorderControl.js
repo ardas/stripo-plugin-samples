@@ -11,20 +11,20 @@ export default {
     ...baseControl,
     name: CONTROL_NAME_BLOCK_BORDER,
     themeKey: 'blockBorder',
+    defaultValue: {
+        top: {...DEFAULT_STYLES},
+        right: {...DEFAULT_STYLES},
+        bottom: {...DEFAULT_STYLES},
+        left: {...DEFAULT_STYLES}
+    },
+
 
     getLabel() {
         return this.translate('settings.controls.blockBorder.label');
     },
 
     getBorderStyleValue() {
-        return this.panelState.blockConfig.theme && this.panelState.blockConfig.theme.blockBorder
-                ? this.panelState.blockConfig.theme.blockBorder
-                : {
-                    top: {...DEFAULT_STYLES},
-                    right: {...DEFAULT_STYLES},
-                    bottom: {...DEFAULT_STYLES},
-                    left: {...DEFAULT_STYLES}
-                };
+        return this.getValueFromElementOrConfigOrDefault();
     },
 
     getDomElementsToApplyValue() {

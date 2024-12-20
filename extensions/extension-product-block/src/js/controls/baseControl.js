@@ -1,8 +1,32 @@
 import {EVENT_NAME_LAYOUT_CHANGED} from '../const';
+import {isEqual} from "lodash";
 
 export default {
+    defaultValue: null,
     onActivated() {
         this.registerSettingsEventListener(EVENT_NAME_LAYOUT_CHANGED, this.layoutChanged.bind(this));
+        const valueFromElement = typeof this.getValueFromElement === 'function' ? this.getValueFromElement() : null;
+        if (!this.isValueEmpty(valueFromElement) && !isEqual(valueFromElement, this.getThemeValueFromConfig())) {
+            this.controlValueUpdated(valueFromElement);
+            this.applyChanges();
+        }
+    },
+
+    getValueFromElementOrConfigOrDefault() {
+        const valueFromElement = this.getValueFromElement();
+        if (!this.isValueEmpty(valueFromElement)) {
+            return valueFromElement;
+        }
+        const valueFromConfig = this.getThemeValueFromConfig();
+        if (valueFromConfig){
+            return valueFromConfig;
+        }
+        return this.defaultValue;
+    },
+
+
+    isValueEmpty(value) {
+        return value === null || value === undefined;
     },
 
     layoutChanged() {
