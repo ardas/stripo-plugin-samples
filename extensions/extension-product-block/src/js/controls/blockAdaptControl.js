@@ -5,6 +5,7 @@ export default {
     ...baseControl,
     name: CONTROL_NAME_BLOCK_ADAPT,
     themeKey: 'blockAdapt',
+    defaultValue: {adapt: 'true'},
 
     getLabel() {
         return this.translate('settings.controls.blockAdapt.label');
@@ -19,9 +20,7 @@ export default {
     },
 
     getAdaptValue() {
-        return this.panelState.blockConfig.theme && this.panelState.blockConfig.theme.blockAdapt
-            ? this.panelState.blockConfig.theme.blockAdapt
-            : {'adapt': true};
+        return this.getValueFromElementOrConfigOrDefault();
     },
 
     applyThemeFromConfig() {
