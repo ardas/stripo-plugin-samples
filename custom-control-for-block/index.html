@@ -126,6 +126,21 @@
                     //This function is called when the window.StripoApi object is created but before Stripo editor initialization
 
                     const STRIPO_IMAGE_LOGO_CONTROL_NAME = "stripoImageLogoControl";
+                    const STRIPO_BACKGROUND_COLOR_CONTROL_NAME = "stripeBgColorControl";
+
+                    const stripoBackgroundColorControl = {
+                        // Parent control name is the name of the control that this control will be extended from
+                        parentControlName: 'stripoBackgroundColorControl',
+                        name: STRIPO_BACKGROUND_COLOR_CONTROL_NAME,
+
+                        getTargetElements() {
+                            return [this.initialDomElement];
+                        },
+
+                        getInitialColor() {
+                            return this.getTargetElements()[0].getAttribute('bgcolor');
+                        },
+                    };
 
                     //Custom control definition. name and render() function must be defined
                     //   this.jContainer - jQuery container for control rendering
@@ -144,11 +159,12 @@
                                 that.jElement.find('img').attr('src', 'https://str.stripocdn.email/content/guids/CABINET_9df86e5b6c53dd0319931e2447ed854b/images/64951510234941531.png');
                             });
                         }
-                    }
+                    };
 
-                    window.StripoApi.initExternalSettingControls = function(controlsList) {
+                  window.StripoApi.initExternalSettingControls = function(controlsList) {
                         //Custom control must be added to the list of all Stripo controls
-                        controlsList.push(stripoImageLogoControl)
+                        controlsList.push(stripoImageLogoControl);
+                        controlsList.push(stripoBackgroundColorControl);
                     };
                     window.StripoApi.initExternalSettingsPanels = function(panelsList) {
                         //Custom control name must be added to the list of controls of appropriate settings panel
@@ -158,6 +174,8 @@
                         //   }
 
                         panelsList.find(p => p.name == 'imgBlockSettingsPanel').controls.push(STRIPO_IMAGE_LOGO_CONTROL_NAME);
+                        // add stripeBgColorControl to stripe settings
+                        panelsList.find(p => p.name == 'stripeSettingsPanel').controls.push(STRIPO_BACKGROUND_COLOR_CONTROL_NAME);
                     };
                 });
             };
