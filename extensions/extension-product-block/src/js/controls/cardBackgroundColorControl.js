@@ -5,15 +5,14 @@ export default {
     ...baseControl,
     name: CONTROL_NAME_CARD_BACKGROUND_COLOR,
     themeKey: 'bgColor',
+    defaultValue: 'transparent',
 
     getLabel() {
         return this.translate('settings.controls.bgColor.label');
     },
 
     getInitialColor() {
-        return this.panelState.blockConfig.theme && this.panelState.blockConfig.theme.bgColor
-                ? this.panelState.blockConfig.theme.bgColor.color
-                : 'transparent';
+        return this.getValueFromElementOrConfigOrDefault();
     },
 
     getDomElementsToApplyValue() {
