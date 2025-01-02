@@ -12,20 +12,19 @@ export default {
     name: CONTROL_NAME_CARD_BORDER,
     themeKey: 'cardBorder',
     useSeparateControls: false,
+    defaultValue: {
+        top: {...DEFAULT_STYLES},
+        right: {...DEFAULT_STYLES},
+        bottom: {...DEFAULT_STYLES},
+        left: {...DEFAULT_STYLES}
+    },
 
     getLabel() {
         return this.translate('settings.controls.cardBorder.label');
     },
 
     getBorderStyleValue() {
-        return this.panelState.blockConfig.theme && this.panelState.blockConfig.theme.cardBorder
-                ? this.panelState.blockConfig.theme.cardBorder
-                : {
-                    top: {...DEFAULT_STYLES},
-                    right: {...DEFAULT_STYLES},
-                    bottom: {...DEFAULT_STYLES},
-                    left: {...DEFAULT_STYLES}
-                };
+      return this.getValueFromElementOrConfigOrDefault();
     },
 
     getDomElementsToApplyValue() {
