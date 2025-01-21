@@ -15,6 +15,9 @@ export default {
 
 
     storeThemeValue(item, value) {
+        if (this.isEmptyOrZeroPaddings(value) && this.isEmptyOrZeroPaddings(item.theme[this.themeKey])) {
+            return;
+        }
         item.theme[this.themeKey] = Object.assign({}, item.theme[this.themeKey], value);
-    }
+    },
 }
