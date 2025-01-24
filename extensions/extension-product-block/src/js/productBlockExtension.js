@@ -216,9 +216,7 @@ export function createProductBlockExtension(stripoConfig, stripoApi, extensionBa
     }
 
     function getBlockLabel(block) {
-        console.log('getBlockLabel', block);
         const blockConfiguration = blockConfigurationService.getBlockConfiguration(block);
-        console.log('blockConfiguration', blockConfiguration);
         return blockConfiguration?.groups?.map(g => g.name).join(', ') || stripoApi.translate('preview.label');
     }
 
