@@ -10,7 +10,10 @@ export default {
         this.selectedGroups = this.getSelectedGroups();
         this.jContainer.html(this.getControlMarkup());
         this.dropDown = this.jContainer.find('dropdown-input')[0];
-        this.updateSeparatorVisibility();
+        this.updateSeparatorAndButtonVisibility();
+        this.jContainer.find('.reset-button').on('click', () => {
+            this.extension.resetLayout(this.jElement);
+        });
     },
 
     getOptions() {
@@ -31,8 +34,13 @@ export default {
         return (this.panelState.blockConfig.groups || []).map(g => g.id);
     },
 
-    updateSeparatorVisibility() {
+    updateSeparatorAndButtonVisibility() {
         this.setControlsSeparatorVisible(!!this.jElement.attr(ATTR_NAME_RECOMMENDATION_GROUPS));
+        this.setResetButtonVisible(!!this.jElement.attr(ATTR_NAME_RECOMMENDATION_GROUPS));
+    },
+
+    setResetButtonVisible(visible) {
+      this.jContainer.find('.reset-button').css('display', visible ? 'block' : 'none');
     },
 
     onChange(selectedGroupsIds) {
@@ -54,11 +62,12 @@ export default {
     },
 
     layoutChanged() {
+        console.log('layoutChanged selectedGroups', this.getSelectedGroups());
         if (this.isControlVisible()) {
             this.dropDown.props.value = this.getSelectedGroups();
         }
         this.updateControlVisibility();
-        this.updateSeparatorVisibility();
+        this.updateSeparatorAndButtonVisibility();
     },
 
     getControlMarkup() {
@@ -74,6 +83,11 @@ export default {
                                 placeholder="${this.translate('settings.controls.groups.empty')}"
                                 multi="true">                                       
                 </dropdown-input>
+            </div>
+            <div class="reset-button col-xs-12" style="margin-top: 15px">
+                <button class="btn btn-default btn-success">
+                    RESET
+                </button>
             </div>
         </div>`;
     }
