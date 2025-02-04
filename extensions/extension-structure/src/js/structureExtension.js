@@ -41,6 +41,9 @@ export function createExtension(stripoConfig, stripoApi, extensionBasePath) {
         blockName: 'block.name',
         blockType: 'structure',
         hasInternalBlocks: true,
+        canBlockBeDroppedInside: ()=> {
+            return false;
+        },
         useDefaultStructurePaddings: true,
         controlsToCreate: [
             {control: backgroundColorControl, parentControlName: 'stripoBackgroundColorControl'},
