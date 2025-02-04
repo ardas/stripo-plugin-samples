@@ -217,7 +217,7 @@ export function createProductBlockExtension(stripoConfig, stripoApi, extensionBa
 
     function getBlockLabel(block) {
         const blockConfiguration = blockConfigurationService.getBlockConfiguration(block);
-        return blockConfiguration.groups.map(g => g.name).join(', ') || stripoApi.translate('preview.label');
+        return blockConfiguration?.groups?.map(g => g.name).join(', ') || stripoApi.translate('preview.label');
     }
 
     function getDefaultSettingsPanelState(block) {
@@ -261,6 +261,19 @@ export function createProductBlockExtension(stripoConfig, stripoApi, extensionBa
     }
 
     function onDeselectBlock(block) {
+    }
+
+    function resetLayout(jElement) {
+        // create new element with default layout and dev markup(add special classes, buttons etc)
+        const newElement = stripoApi.jQuery(stripoApi.addDevMarkupToElements(this.getBlockLayoutToDrop()));
+        // add extension classes
+        newElement.addClass(BLOCK_UNIQUE_CLASS_NAME).addClass('esd-extension');
+        // add element behaviour (move, drop, resize etc)
+        stripoApi.addDevElementBehaviour(newElement);
+        // replace old element with new
+        jElement[0].replaceWith(newElement[0]);
+        // select new element to show settings panel for updated element
+        stripoApi.changeSelection(newElement[0]);
     }
 
     return {
@@ -333,6 +346,7 @@ export function createProductBlockExtension(stripoConfig, stripoApi, extensionBa
         blockConfigurationService,
         onModuleChanged,
         onSelectBlock,
-        onDeselectBlock
+        onDeselectBlock,
+        resetLayout,
     }
 }
