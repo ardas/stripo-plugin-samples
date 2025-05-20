@@ -90,7 +90,6 @@ export default {
 
     layoutChanged() {
         if (this.isControlVisible()) {
-            this.reOrderVariableControls();
             this.jItemsContainer.find('.cursor-reorder').toggleClass(HIDDEN_AREA_CLASS, !this.isChangePositionSupported());
             this.panelState.blockConfig.composition.variables.forEach(item => {
                 const variableContainer = this.jItemsContainer.find(`[data-varname="${item.variable}"]`);
