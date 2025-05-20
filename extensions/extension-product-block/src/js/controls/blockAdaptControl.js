@@ -12,11 +12,9 @@ export default {
     },
 
     getDescriptionOnLabel() {
-        return this.translate('settings.controls.blockAdapt.on');
     },
 
     getDescriptionOffLabel() {
-        return this.translate('settings.controls.blockAdapt.off');
     },
 
     getAdaptValue() {
