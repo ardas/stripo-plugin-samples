@@ -54,7 +54,8 @@ window.ExternalImagesLibrary = (function() {
                 originalName: '9091542014595406.png',
                 resolution: '600 x 410 px',
                 size: '169.20 kb',
-                url: e.target.getAttribute('src')
+                url: e.target.getAttribute('src'),
+                altText: 'Some image'
             };
             imageSelectCallback(exampleOfCallbackImageObject);
             close();
